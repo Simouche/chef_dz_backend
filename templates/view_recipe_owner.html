@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+<style>
+
+.navbar-custom.costum .nav-item .nav-link {
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	color: #393939;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	text-align: center;
+	font-weight: bold;
+
+
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="content1">
+<h2 class="text-center mt-4">{{title}}</h2>
+<div class="card" style="background:white;width:50%;margin:auto;margin-bottom:20px">
+    <div class="card-body">
+
+
+
+  <div id="filtreindex" style="margin-top: 10px" class="row recipes">
+                        {% for recipe in recipes %}
+
+                        <div class="item col-sm-3 grid"
+                             onclick="window.open('{% url 'recipe:recipe-details' pk=recipe.pk %}', '_self')">
+
+
+                            <div class="image">
+                                <img style="height:150px" class="imgcuisine" src="{% if recipe.main %}{{ recipe.main.url }}{% endif %}" width="100%">
+
+
+                            </div>
+                            <div class="texte">
+                                <p class="texterecipe"><strong>{{ recipe.food_name }} </strong></p>
+                                <p
+                                   class="texterecipe descriptionrecipe">{{ recipe.description }}</p></div>
+                            <div class="by">
+                                <p style="float:left;margin-left: 2px">
+                                    {{recipe.published_by.profile.owner.username}}</p><span style="float:right;"> {% if recipe.avg%} {{recipe.avg}} {%else%} 0{%endif%}<i
+                                    class="fa fa-star mauve"></i> {{recipe.likes_}}❤  {{recipe.comments_}} <i
+                                    class="fas fa-comments"></i></span></div>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+    </div>
+</div></div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+            <script>
+
+             $(".phone-input").intlTelInput({
+               preferredCountries: ["dz"],
+               utilsScript: "{% static 'intl-tel-input/js/utils.js' %}"
+             });
+             if ($('#phone-number').val() != '') {
+               $(".phone-input").intlTelInput('setNumber', $('#phone-number').val())
+             }
+             $('.phone-input').change(function () {
+                $(this).parent().next().val($(this).intlTelInput("getNumber"))
+             })
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                yearRange: [1900, new Date(new Date().setFullYear(new Date().getFullYear() - 18)).getFullYear()],
+                maxDate:new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
+                defaultDate: new Date((new Date()).getFullYear()-18,1,31),
+
+            })
+             $('.datepicker').on('focus', function (e) {
+                $(this).datepicker('open')
+            })
+            $('.datepicker-modal .btn-flat').on('click', function (e) {
+                $('#' + $('.datepicker').parent().next().find('input').attr('id')).trigger('focus')
+            })
+
+
+
+            </script>
+{% endblock scripts %}

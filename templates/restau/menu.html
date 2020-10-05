@@ -1,0 +1,167 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+
+<!-- SubHeader =============================================== -->
+<section class="parallax-window" data-parallax="scroll" data-image-src="img/sub_header_2.jpg" data-natural-width="1400" data-natural-height="470">
+    <div id="subheader">
+	<div id="sub_content">
+    	<div id="thumb"><img src="img/thumb_restaurant.jpg" alt=""></div>
+                     <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i> (<small><a href="detail_page_2.html">Read 98 reviews</a></small>)</div>
+              {% for menu in menu_list %}
+                   {% if forloop.first %}
+                    <h1>{{ menu.offered_by }} </h1>
+                    {% endif %}
+              {% endfor %}
+                    <div><em>Mexican / American</em></div>
+    </div><!-- End sub_content -->
+</div><!-- End subheader -->
+</section><!-- End section -->
+<!-- End SubHeader ============================================ -->
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li><a href="#0">Home</a></li>
+                <li><a href="#0">Category</a></li>
+                <li>Page active</li>
+            </ul>
+            <a href="#0" class="search-overlay-menu-btn"><i class="icon-search-6"></i> Search</a>
+        </div>
+    </div><!-- Position -->
+
+<!-- Content ================================================== -->
+<div class="container margin_60_35">
+		<div class="row">
+            <div class="col-md-3">
+            	<p><a href="javascript:openp()" class="btn_side">ADD menu</a></p>
+
+            {% for menu in menu_list %}
+                   {% if forloop.first %}
+                    <input id="restaurant" value="{{ menu.offered_by.id }}" hidden>
+
+            {% endif %} {% endfor %}
+            	<p><a onClick="javascript:window.history.go(-1)" class="btn_side">Back</a></p>
+				<div class="box_style_1" id="sidebar">
+                    <div class="theiaStickySidebar">
+					<ul id="cat_nav">
+
+                        {% for menu in menu_list %}
+                                    <li><a href="#{{ menu.type }}" class="active">{{ menu.type }}<span>(10)</span></a></li>
+                    {% endfor %}
+
+
+                    </ul></div>
+				</div><!-- End box_style_1 -->
+
+
+			</div><!-- End col-md-3 -->
+            
+			<div class="col-md-9">
+				<div class="box_style_2" id="main_menu">
+
+					<h2 class="inner">Menu</h2>
+					<h3 class="nomargin_top" id="starters">type 1</h3>
+					<p>
+					</p>
+					<table class="table table-striped cart-list">
+					<thead>
+					<tr>
+						<th>
+							 Item
+						</th>
+						<th>
+							 Price
+						</th>
+
+					</tr>
+					</thead>
+					<tbody>
+                    {% for menu in menu_list %}
+
+					<tr>
+						<td>
+                        	<figure class="thumb_menu_list"><img src="{% if menu.image %} {{ menu.image.url }} {% endif %}" alt="thumb"></figure>
+							<h5>{{ menu.name }}</h5>
+							<p>
+                                {{ menu.description }}
+
+							</p>
+						</td>
+						<td>
+							<strong>{{menu.price}}</strong>
+						</td>
+
+					</tr>
+			{% endfor %}
+
+					</tbody>
+					</table>
+					<hr>
+
+
+				</div><!-- End box_style_1 -->
+			</div><!-- End col-md-6 -->
+
+
+
+		</div><!-- End row -->
+</div><!-- End container -->
+<!-- End Content =============================================== -->
+  {% endblock content %}
+
+{% block scripts %}
+     <script>
+     var varr = $('#restaurant').val();
+        openp = function() {
+                location.href = "/restaurant/menu/create/?restaurant="+varr;
+        }
+      function add_to_cart(menu,price) {
+            var drapeau=0;
+         $('.orders > tr').each(function() {
+             if ($(this).find('.menu_name').html() == menu ) {
+                 var qte = $( this ).find( ".qte" ).html();
+                 qte=parseInt(qte)+1;
+                 $( this ).find( ".qte" ).html(qte);
+                 drapeau=1;
+                 return false;
+             }
+             })
+
+          if(drapeau==0){
+               order="<tr>\n" +
+                   "\t\t\t\t\t\t<td>\n" +
+                   " <a onclick=\"remove_from_cart(this)\" class=\"remove_item\"><i class=\"icon_minus_alt\"></i></a> <strong class=\"qte\">1</strong>x <span class=\"menu_name\">"+menu+"</span>\n" +
+                   "\t\t\t\t\t\t</td>\n" +
+                   "\t\t\t\t\t\t<td>\n" +
+                   "\t\t\t\t\t\t\t<strong class=\"pull-right\">"+price+"</strong>\n" +
+                   "\t\t\t\t\t\t</td>\n" +
+                   "\t\t\t\t\t</tr>"
+
+
+          tableBody = $(".orders");
+          tableBody.append(order);
+
+          }
+      }
+      function remove_from_cart(ok) {
+          var qte = $( ok ).parent().find( ".qte" ).html();
+
+           if(qte > 1){
+               qte=qte-1;
+               $( ok ).parent().find( ".qte" ).html(qte);
+           } else if (qte==1){
+               $( ok ).parent().parent().remove();
+           }
+
+      }
+
+     </script>
+
+{% endblock scripts %}

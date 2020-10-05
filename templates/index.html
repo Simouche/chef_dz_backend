@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+
+<!-- Preloader -->
+<div class="spinner-wrapper">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- end of preloader -->
+
+<div id="content22" class="content">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+
+        </ol>
+        <div class="carousel-inner">
+
+
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="{% static 'images/machawi.jpg' %}" alt="First slide">
+            </div>
+ <div class="carousel-item ">
+                <img class="d-block w-100" src="{% static 'images/Presentation1-1.png' %}" alt="First slide">
+            </div>
+            <div class="carousel-item ">
+                <img class="d-block w-100" src="{% static 'images/Presentation1-2.png' %}" alt="First slide">
+            </div>
+ <div class="carousel-item ">
+                <img class="d-block w-100" src="{% static 'images/Presentation1-3.png' %}" alt="First slide">
+            </div>
+
+
+
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+    <div id="recipesbar" class="card vert" style="text-align: center;margin: 0px 0 20px 0;padding: 15px">
+        <h2 style="color: #fff">{% trans "RECIPES" %}</h2>
+    </div>
+
+    <div id="recipes" class="cards" style="padding-top: 10px">
+
+        <div class="container" style="text-align: center">
+
+            <div class="row">
+                <div style="text-align: left" class="col-lg-2 filters">
+                    <h4><strong>{% trans "Filters" %}</strong></h4>
+                    <form id="formfilter" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+<div class="sortby" >
+                        <h5 href="#" class="title-filter selected">{% trans "Sort By" %}</h5>
+                            <label id="1" class="filter-name">{% trans "Recently added" %}</label><br>
+
+                        <label id="2"  class="filter-name ">{% trans "Popularity" %}</label>
+    <a class="filter-info">{% trans "High to low" %}</a><br>
+                        <label id="3" class="filter-name">{% trans "Rating" %}</label>
+    <a class="filter-info">{% trans "High to low" %}</a><br>
+                        <div class="dropdown-divider"></div>
+</div>
+<div class="cuisine">
+                        <h5 class="title-filter">{% trans "Cuisine" %}</h5>
+ {% for cuisine in cuisines %}
+                        {% if forloop.counter < 5 %}
+
+                        <label id="{{cuisine.id}}"  class="filter-name">{{cuisine.name}}</label><br>
+                            {% endif %}
+                         {% endfor %}
+                          <span class="more-text hide">
+                               {% for cuisine in cuisines %}
+                              {% if forloop.counter > 4 %}
+                              <label id="{{cuisine.id}}"  class="filter-name">{{cuisine.name}}</label><br>
+                              {% endif %}
+                                 {% endfor %}
+
+                            </span>
+
+                     {% for cuisine in cuisines %}
+                                  {% if forloop.counter > 4 %}
+
+                                   {% if forloop.last%}
+                        <a data-show="More" more-collapse="false" class="title-filter showmore" style="cursor: pointer;" >More</a>
+                        {% endif %}
+{% endif %}
+
+                         {% endfor %}
+
+
+
+
+                        <div class="dropdown-divider"></div>
+</div>
+<div class="wilaya">
+                        <h5 class="title-filter">{% trans "Address" %}</h5>
+ {% for wilaya in wilayas %}
+                        {% if forloop.counter < 5 %}
+
+                        <label id="{{wilaya.id}}"  class="filter-name">{{wilaya.name}}</label><br>
+                            {% endif %}
+                         {% endfor %}
+                          <span class="more-text hide">
+                               {% for wilaya in wilayas %}
+                              {% if forloop.counter > 4 %}
+                              <label id="{{wilaya.id}}"  class="filter-name">{{wilaya.name}}</label><br>
+                              {% endif %}
+                                 {% endfor %}
+
+                            </span>
+
+                     {% for wilaya in wilayas %}
+                                  {% if forloop.counter > 4 %}
+
+                                   {% if forloop.last%}
+                        <a style="cursor: pointer;"  data-show="More" more-collapse="false" class="title-filter showmore">More</a>
+                        {% endif %}
+{% endif %}
+
+                         {% endfor %}
+
+
+
+
+                        <div class="dropdown-divider"></div>
+</div>
+                    </form>
+                </div>
+
+                <div class="col-lg-10">
+                    <div class="row" style="margin-bottom: 5px">
+
+
+                        <div class="col-lg-8">
+                            <div class="gridlist" style="float: left;margin:5px">
+                                <span id="list" class="fas fa-list fa-2x"></span>
+                                <span id="grid" class="fas fa-th fa-2x"></span>
+                            </div>
+                            <div STYLE="float: left">
+                                <input style="padding-left: 22px;" type="text" class="form-control browser-default"
+                                       placeholder="{% trans 'Search' %} ">
+                                <span class="fas fa-search insideinput"></span></div>
+                        </div>
+
+                    </div>
+
+                <div id="filterrecipe">
+                    {% include "list_recipe.html" %}</div>
+  <div id="filtreindex" style="margin-top: 10px" class="row recipes">
+                        {% for recipe in recipes %}
+
+                        <div class="item col-sm-3 grid"
+                             onclick="window.open('{% url 'recipe:recipe-details' pk=recipe.pk %}', '_self')">
+
+
+                            <div class="image">
+                                <img style="height:150px" class="imgcuisine" src="{%  if recipe.main  %}{{ recipe.main.url }}{% endif %}" width="100%">
+
+
+                            </div>
+                            <div class="texte">
+                                <p class="texterecipe"><strong>{{ recipe.food_name }} </strong></p>
+                                <p style=""
+                                   class="texterecipe descriptionrecipe">{{ recipe.description }}</p></div>
+                            <div class="by">
+                                <p style="float:left;margin-left: 2px">
+                                    {{recipe.published_by.profile.owner.username}}</p><span style="float:right;"> {% if recipe.avg%} {{recipe.avg}} {%else%} 0 {%endif%}<i
+                                    class="fa fa-star mauve"></i> {{recipe.likes_}}❤  {{recipe.comments_}} <i
+                                    class="fas fa-comments"></i></span></div>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card weare" style="margin: 20px 0 0 0;height:350px">
+   <div class="container" style="margin-top:5%;color:white">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h4><strong>{% trans "Téléchargez l'application maintenant!" %}</strong></h4>
+                <p class="lead mb-5 mb-lg-0 text-left">{% trans "Prêt à commencer? Téléchargez l'application maintenant!" %}</p>
+            </div>
+            <div class="col-lg-6 text-lg-right">
+                    <a href="https://play.google.com/store/apps/details?id=com.itgds.recipes" target="_blank"><img
+                        src="{% static 'images/google-play-badge.svg' %}" style="height: 3rem;"></a>
+            </div>
+        </div>
+   </div></div>
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+
+<script>
+
+var recently_added = false;
+var popularity=false,rating=false,cuisine,wilaya;
+$( ".filter-name" ).click(function() {
+
+
+       if ($(this).parent('.sortby').length) {
+            $( ".sortby .selected" ).removeClass('selected');
+           if(this.id==1){
+           recently_added=true;popularity=false;rating=false;
+           }
+           else if(this.id==2){
+           recently_added=false;popularity=true;rating=false;
+           }
+           else{
+           recently_added=false;popularity=false;rating=true;
+
+           }
+
+       }else if ($(this).parents('.cuisine').length) {
+                   $( ".cuisine .selected" ).removeClass('selected');
+                   cuisine= this.id;
+
+        } else {
+        $( ".wilaya .selected" ).removeClass('selected');
+                  wilaya=this.id;
+
+        }
+        $(this).addClass('selected');
+
+
+$.ajax({
+        url : "{% url 'restaurants:home' %}",
+        type : "POST",
+        data : {wilaya, cuisine, recently_added, popularity, rating, csrfmiddlewaretoken: '{{ csrf_token }}' },
+        success : function(json) {
+        $('#filtreindex').hide();
+        },
+        error : function(xhr,errmsg,err) {
+        }
+    });
+
+});
+
+
+
+
+
+
+
+</script>
+
+{% endblock scripts %}

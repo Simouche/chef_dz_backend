@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+    <style>
+
+
+        .img-overlay, .img-overlay1 {
+            position: absolute;
+            float: left;
+            right: 0px;
+            top: 0px;
+        }
+
+        .removerow:hover, .removerow1:hover, .removesteps:hover, .removestep:hover {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+
+{% endblock styles %}
+
+{% block content %}
+    <div class="card" style="width: 1000px;margin: auto;">
+
+
+        <h1>ADD RECIPE</h1>
+        <strong>Recipe Name</strong>
+        <input type="text" class="form-control"><br>
+
+        <strong>Recipe image</strong>
+        <div class="try">
+            <div class="recetteimg card" style="padding: 0;height: 100px">
+                <div class="sss" style="margin: auto">
+
+                    <i class="fas fa-camera-retro"></i> UPLOAD IMAGE FOR YOUR RECIPE
+                </div>
+                <img style="margin: 0;padding: 0" id='image' class="profileImg">
+                <input type='file' class='uploader' onchange="readURL(this);"/>
+
+
+            </div>
+        </div>
+
+        <br>
+        <strong>Short description</strong>
+        <textarea class="form-control" rows="3"></textarea><br>
+
+        <strong>INGREDIENTS</strong>
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary addingrd">Add ingredient</button>
+                <br>
+            </div>
+        </div>
+        <div style="display: none" class="ingredients">
+            <table id="ingred" class="table table-borderless table-hover">
+                <thead>
+                <tr>
+                    <th width="20%">AMOUNT</th>
+                    <th width="20%">MEASUREMENT</th>
+                    <th width="50%">ITEM</th>
+                    <th width="10%"><i class="fas fa-times removerow1 fa-2x"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="row"><input class="form-control" placeholder="--"></td>
+                    <td><select class="form-control">
+                        <option>--</option>
+                        <option>qte</option>
+                        <option>g</option>
+                        <option>kg</option>
+                    </select></td>
+                    <td><input class="form-control" placeholder="Eggs, Milk, .. ect"></td>
+                    <td><i class="fas fa-times removerow fa-2x"></i></td>
+                </tr>
+                </tbody>
+            </table>
+            <button style="width: 200px" class="btn btn-primary addingr">Add ingredient</button>
+        </div>
+
+        <br> <strong>STEPS</strong>
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary addsteps">Add steps</button>
+                <br>
+            </div>
+        </div>
+        <div class="steps" style="display: none">
+            <table id="steps" class="table table-borderless table-hover">
+                <thead>
+                <tr>
+                    <th width="20%">Image</th>
+                    <th width="70%">Description</th>
+                    <th width="10%"><i class="fas fa-times removesteps fa-2x"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+
+                        <div class="try1">
+                            <div class="recetteimg1 card" style="height:130px;padding: 0">
+                                <div class="sss" style="margin: auto;">
+                                    add image
+
+                                </div>
+                                <img style="margin: 0;padding: 0" id='image1' class="profileImg">
+                                <input type='file' class='uploader' onchange="readURL1(this);"/>
+
+
+                            </div>
+                        </div>
+                    </td>
+                    <td><textarea class="form-control" rows="5"></textarea></td>
+                    <td><i class="fas fa-times removestep fa-2x"></i></td>
+
+                </tr>
+                </tbody>
+            </table>
+            <button style="width: 200px" class="btn btn-primary addstep">Add step</button>
+
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+
+    <script>
+
+        $('.addingrd').click(function () {
+            $(this).hide();
+            $('.ingredients').show();
+        })
+        $('.addsteps').click(function () {
+            $(this).hide();
+            $('.steps').show();
+        })
+
+        $('.addingr').click(function () {
+            $('#ingred').append('  <tr>\n' +
+                '            <th scope="row"><input class="form-control" placeholder="--"></th>\n' +
+                '            <td><select class="form-control" >\n' +
+                '                <option>--</option>\n' +
+                '                <option>qte</option>\n' +
+                '                <option>g</option>\n' +
+                '                <option>kg</option>\n' +
+                '            </select></td>\n' +
+                '            <td><input class="form-control" placeholder="Eggs, Milk, .. ect"></td>\n' +
+                '            <td><i class="fas fa-times removerow fa-2x"></i></td>\n' +
+                '        </tr>')
+        });
+        $('.addstep').click(function () {
+            $('#steps').append(' <tr>\n' +
+                '                    <td>\n' +
+                '\n' +
+                '                        <div class="try1">\n' +
+                '                            <div class="recetteimg1 card" style="height:130px;padding: 0" >\n' +
+                '                                <div class="sss" style="margin: auto;">\n' +
+                '                                    add image\n' +
+                '\n' +
+                '                                </div>\n' +
+                '                                <img style="margin: 0;padding: 0"  id=\'image1\' class="profileImg">\n' +
+                '                                <input type=\'file\' class=\'uploader\' onchange="readURL1(this);" />\n' +
+                '\n' +
+                '\n' +
+                '                            </div></div>\n' +
+                '                    </td>\n' +
+                '                <td><textarea class="form-control" rows="5"></textarea></td>\n' +
+                '                <td><i class="fas fa-times removestep fa-2x"></i></td>\n' +
+                '\n' +
+                '            </tr>')
+        });
+
+
+        $('#ingred').on('click', '.removerow', function () {
+            $(this).closest('tr').remove();
+        })
+
+        $('#steps').on('click', '.removestep', function () {
+            $(this).closest('tr').remove();
+        })
+
+        $('#ingred').on('click', '.removerow1', function () {
+            $('.ingredients').hide();
+            $('.addingrd').show();
+        })
+        $('#steps').on('click', '.removesteps', function () {
+            $('.steps').hide();
+            $('.addsteps').show();
+        })
+
+
+        function tryy() {
+            $('.img-wrapper').remove();
+            $('.recetteimg').show();
+        }
+
+        function tryy1() {
+            $('.img-wrapper1').remove();
+            $('.recetteimg1').show();
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    $('.try').append("<div class='img-wrapper'> <img class='recetteimage' src='" + e.target.result + "' width='auto'> <div class=\"img-overlay\"> <i class=\"fas fa-times fa-4x\" onclick=\"tryy()\"></i></div> </div>");
+                    $('.recetteimg').hide();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readURL1(input) {
+
+
+            if (input.files && input.files[0]) {
+                $(this).closest('tr').remove();
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.try1').append("<div class='img-wrapper1'> <img class='recetteimage1' width='100%' height='120px' src='" + e.target.result + "' width='auto'> <div class=\"img-overlay1\"> <i class=\"fas fa-times fa-2x\" onclick=\"tryy1()\"></i></div> </div>");
+                    $('.recetteimg1').hide();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+    </script>
+
+{% endblock scripts %}

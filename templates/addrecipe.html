@@ -1,0 +1,532 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+    <style>
+
+        .navbar-custom.costum .nav-item .nav-link {
+            padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+            color: #393939;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-weight: bold;
+
+
+        }
+    </style>
+{% endblock styles %}
+
+{% block content %}
+
+
+    <div class="content1">
+        <h2 class="text-center mt-4">{{ title }}</h2>
+        <div class="card" style="background:white;width:50%;margin:auto;margin-bottom:20px">
+            <div class="card-body">
+
+                {{ recipe_form.pk }}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if messages %}
+                        <div class="form-group row">
+                            <div class="col">
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                                         role="alert">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {{ recipe_form.management_form }}
+                    {% if recipe_form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% for error in recipe_form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="form-group try">
+
+                        <div class="recetteimg card" style="padding: 0;height: 100px">
+
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.main.errors %}
+
+                                    {% render_field recipe_form.main class="form-control browser-default is-invalid" id="main" %}
+                                    {% for error in recipe_form.main.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+
+                                <div class="sss" style="margin: auto">
+
+                                    <i class="fas fa-camera-retro"></i>{% trans "UPLOAD IMAGE FOR YOUR RECIPE" %}
+                                </div>
+                                <img style="margin: 0;padding: 0" class="profileImg">
+                                <input accept="image/*" type='file' id="main" name="main" class='uploader'
+                                       onchange="readURL(this);"/>
+
+
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 position-relative mb-3">
+                            <label for="food_name">{% trans 'Recipe Name' %} :</label>
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.food_name.errors %}
+
+                                    {% render_field recipe_form.food_name class="form-control browser-default is-invalid" id="food_name" %}
+                                    {% for error in recipe_form.food_name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field recipe_form.food_name class="form-control browser-default is-valid" id="food_name" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field recipe_form.food_name class="form-control browser-default" id="food_name" %}
+                            {% endif %}
+
+                        </div>
+
+                        <div class="col-md-6 position-relative mb-3">
+                            <label for="cost">{% trans 'Cost  (1:easy - 5:difficult)' %} :</label>
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.cost.errors %}
+
+                                    {% render_field recipe_form.cost class="form-control browser-default is-invalid" id="cost" %}
+                                    {% for error in recipe_form.cost.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field recipe_form.cost class="form-control browser-default is-valid" id="cost" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field recipe_form.cost min="1" max="5" class="form-control browser-default" id="cost" %}
+                            {% endif %}
+
+                        </div>
+                        <div class="col-md-6 position-relative mb-3">
+                            <label for="description">{% trans 'Recipe description' %} :</label>
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.description.errors %}
+
+                                    {% render_field recipe_form.description class="form-control browser-default is-invalid" rows="5" id="description" %}
+                                    {% for error in recipe_form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field recipe_form.description class="form-control browser-default is-valid" rows="5" id="description" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field recipe_form.description class="form-control browser-default" rows="5" id="description" %}
+                            {% endif %}
+
+                        </div>
+                        <div class="col-md-6 position-relative mb-3 ">
+                            <label for="media">{% trans "Other images for recipe" %}</label>
+                            <input accept="image/*" class="form-control" type="file" name="media" id="media"
+                                   multiple="multiple" onchange="readURL2(this);"/>
+                            <div style="margin:2px" class="otherimg"></div>
+                        </div>
+                        <div class="col-md-6 position-relative mb-3">
+                            <label for="cuisine">{% trans 'Cuisine' %} :</label>
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.cuisine.errors %}
+
+                                    {% render_field recipe_form.cuisine class="form-control browser-default is-invalid" id="cuisine" %}
+                                    {% for error in recipe_form.cuisine.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field recipe_form.cuisine class="form-control browser-default is-valid" id="cuisine" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field recipe_form.cuisine class="form-control browser-default" id="cuisine" %}
+                            {% endif %}
+
+                        </div>
+                        <div class="col-md-6 position-relative mb-3">
+                            <label for="type">{% trans 'Type' %} :</label>
+                            {% if recipe_form.is_bound %}
+                                {% if recipe_form.type.errors %}
+
+                                    {% render_field recipe_form.type class="form-control browser-default is-invalid" id="type" %}
+                                    {% for error in recipe_form.type.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field recipe_form.type class="form-control browser-default is-valid" id="type" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field recipe_form.type class="form-control browser-default" id="type" %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <h4>{% trans "INGREDIENTS" %}</h4>
+                    <div class="form-group">
+                        {{ ingredients_form.management_form }}
+
+                        {{ ingredients_form.non_form_errors }}
+                        {% for formm in ingredients_form %}
+                            {{ formm.id }}
+
+                            <div class="form-group row formset_row{{ ingredients_form.prefix }}">
+                                <!-- add id for this formset_row -->
+                                <div class="col-2">
+                                    <label for="quantity">{% trans 'Quantity' %} :</label>
+
+
+                                    {% if formm.is_bound %}
+
+                                        {% if formm.quantity.errors %}
+
+                                            {% render_field formm.quantity class="form-control browser-default is-invalid" id="quantity" %}
+
+                                            {% for error in formm.quantity.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+
+                                            {% render_field formm.quantity class="form-control browser-default is-valid" id="quantity" %}
+
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field formm.quantity class="form-control browser-default" id="quantity" %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-2">
+                                    <label for="measure">{% trans 'Measure' %} :</label>
+
+
+                                    {% if formm.is_bound %}
+
+                                        {% if formm.measure.errors %}
+
+                                            {% render_field formm.measure class="form-control browser-default is-invalid" id="measure" %}
+
+                                            {% for error in formm.measure.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+
+                                            {% render_field formm.measure class="form-control browser-default is-valid" id="measure" %}
+
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field formm.measure class="form-control browser-default" id="measure" %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-7">
+
+                                    <label for="ingredient">{% trans 'Ingredient' %} :</label>
+                                    {% if formm.is_bound %}
+
+                                        {% if formm.ingredient.errors %}
+
+                                            {% render_field formm.ingredient class="form-control browser-default is-invalid" id="ingredient" %}
+
+                                            {% for error in formm.ingredient.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+
+                                            {% render_field formm.ingredient class="form-control browser-default is-valid" id="ingredient" %}
+
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field formm.ingredient class="form-control browser-default" id="ingredient" %}
+
+                                    {% endif %}
+                                </div>
+
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <h4>{% trans "METHODES" %}</h4>
+                    <div class="form-group">
+                        {{ steps_form.management_form }}
+
+                        {{ steps_form.non_form_errors }}
+
+
+                        <div class="steps">
+                            <table id="steps" class="table table-borderless table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="max-width:20%" width="20%"><label>Image</label></th>
+                                    <th width="70%"><label>Description</label></th>
+                                    <th width="10%"></th>
+                                </tr>
+                                </thead>
+                                <tbody> {% for form in steps_form %}
+                                    {{ form.id }}
+
+                                    <tr class="formset_row{{ steps_form.prefix }}">
+                                        <td>
+                                            <div class="try1">
+
+
+                                                {% if form.is_bound %}
+
+                                                    {% if form.image.errors %}
+
+                                                        {% render_field form.image class="form-control browser-default is-invalid" id="image" %}
+
+                                                        {% for error in form.image.errors %}
+                                                            <div class="invalid-feedback">
+                                                                {{ error }}
+                                                            </div>
+                                                        {% endfor %}
+
+
+                                                    {% endif %}
+                                                {% else %}
+
+                                                    <div class="recetteimg1 card" style="height:130px;padding: 0">
+                                                        <div class="sss" style="margin: auto;">
+                                                            add image
+
+                                                        </div>
+                                                        <img style="margin: 0;padding: 0" id='image1'
+                                                             class="profileImg">
+                                                        {% render_field form.image class="uploader" onchange="readURL1(this);" id="image" %}
+
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td> {% if form.is_bound %}
+
+                                            {% if form.description.errors %}
+
+                                                {% render_field form.description class="form-control browser-default is-invalid" id="description" rows="5" %}
+
+                                                {% for error in form.description.errors %}
+                                                    <div class="invalid-feedback">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+
+                                                {% render_field form.description class="form-control browser-default is-valid" id="description" rows="5" %}
+
+                                            {% endif %}
+                                        {% else %}
+                                            {% render_field form.description class="form-control browser-default" id="description" rows="5" %}
+
+                                        {% endif %}</td>
+                                        <td> {% if form.is_bound %}
+
+                                            {% if form.number.errors %}
+
+                                                {% render_field form.number type="hidden" class="form-control browser-default is-invalid" id="number" %}
+
+                                                {% for error in form.number.errors %}
+                                                    <div class="invalid-feedback">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+
+                                                {% render_field form.number type="hidden" class="form-control browser-default is-valid" id="number" %}
+
+                                            {% endif %}
+                                        {% else %}
+
+                                            {% render_field form.number type="hidden" value=forloop.counter class="form-control browser-default" id="number" %}
+                                        {% endif %}</td>
+
+                                    </tr>  {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row m-0 text-right pt-5">
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-blue-secondary">
+                                    {% trans 'Save' %}
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+
+    <script>
+
+        $("input[id='cost']").inputSpinner();
+
+        function tryy3() {
+            $('.otherimg').empty();
+
+        }
+
+
+        function readURL2(input) {
+
+            if (input.files && input.files[0]) {
+
+                $('.otherimg').empty();
+
+
+                $(input.files).each(function () {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(this);
+                    reader.onload = function (e) {
+
+                        $('.otherimg').append("<img style='margin:2px;height:80px;'  width='100px'src='" + e.target.result + "'=>");
+                    }
+                });
+            }
+            $('.otherimg').append("<div class=\"img-overlay2\"><i style='float:right' class=\"fas fa-times fa-2x\" onclick=\"tryy3()\"></i></div>");
+
+
+        }
+
+
+        function tryy1(thisinput, input) {
+            $(thisinput).parents('.try1').children().show();
+            $(thisinput).closest('.img-wrapper1').remove();
+
+        }
+
+        function readURL1(input) {
+            var test = input;
+
+            if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(input).closest('.try1').append("<div class='img-wrapper1'> <img class='recetteimage1' width='100%' height='120px' src='" + e.target.result + "' width='auto'><div class=\"img-overlay1\"><i class=\"fas fa-times fa-2x\" onclick=\"tryy1(this)\"></i></div> </div>");
+                    $(input).parent(".recetteimg1").hide();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        function tryy() {
+            $('.img-wrapper').remove();
+            $('.recetteimg').show();
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    $('.try').append("<div class='img-wrapper' style='text-align:center'> <img class='recetteimage' src='" + e.target.result + "' width='auto'> <div class=\"img-overlay\"> <i class=\"fas fa-times fa-4x\" onclick=\"tryy()\"></i></div> </div>");
+                    $('.recetteimg').hide();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        $(document).ready(function () {
+
+
+            function plus() {
+
+                for (let pas = 1; pas < $('#id_steps-TOTAL_FORMS').val(); pas++) {
+
+                    if ($('#number').val() == 1) {
+                        $('input[name="steps-' + pas + '-number"]').val(pas + 1)
+                    } else {
+                        $('input[name="steps-' + pas + '-number"]').val(pas)
+                    }
+                }
+
+
+            }
+
+            function minus() {
+
+                for (let pas = 1; pas < $('#id_steps-TOTAL_FORMS').val(); pas++) {
+
+                    $('input[name="steps-' + pas + '-number"]').val(pas)
+                }
+
+
+            }
+
+
+            $('.formset_row{{ ingredients_form.prefix }}').formset({
+                addText: '<i class="fas fa-plus"></i> add another',
+                deleteText: '<i class="fas fa-trash"></i>',
+                prefix: '{{ ingredients_form.prefix }}',
+            });
+
+
+            $('.formset_row{{ steps_form.prefix }}').formset({
+                addText: '<i  class="fas fa-plus"></i> {% trans "add another" %}',
+                deleteText: '<i class="fas fa-trash"></i>',
+                prefix: '{{ steps_form.prefix }}',
+                added: plus,
+                removed: minus,
+
+            });
+
+        });
+
+    </script>
+
+{% endblock scripts %}

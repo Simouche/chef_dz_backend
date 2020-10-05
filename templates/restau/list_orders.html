@@ -1,0 +1,436 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+<!-- SubHeader =============================================== -->
+<section class="parallax-window" id="short" data-parallax="scroll" data-image-src="{% static 'img/sub_header_short.jpg' %}" data-natural-width="1400" data-natural-height="350">
+    <div id="subheader">
+	<div id="sub_content">
+    	<h1>{% trans 'Your orders' %}</h1>
+    </div><!-- End sub_content -->
+</div><!-- End subheader -->
+</section><!-- End section -->
+<!-- End SubHeader ============================================ -->
+
+<!-- Content ================================================== -->
+<div class="container margin_60_35">
+	<div class="row">
+
+
+		<div class="col-md-12">
+
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#pending">{% trans 'Pending' %}</a></li>
+  <li><a data-toggle="tab" href="#accepted">{% trans 'Accepted' %}</a></li>
+  <li><a data-toggle="tab" href="#ready">{% trans 'Ready'  %}</a></li>
+  <li><a data-toggle="tab" href="#picked">{% trans 'Picked' %}</a></li>
+  <li><a data-toggle="tab" href="#delivred">{% trans 'Delivred' %}</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="pending" class="tab-pane fade in active">
+ <div class="row">
+
+                 {% for order in orders %}
+                      {% if order.status == 'P'%}
+                        <div class="col-md-3">
+                <div class="box_home" >
+                  <h3>{{ order.status }} - {{ order.number }}</h3>
+                    <p>
+                        {{ order.client.owner.full_name}}<br>
+                        {{ order.created_at }}
+                    </p>
+                    <br>
+                    <div class="go_to">
+							<div>
+								<a data-toggle="modal" data-target="#modal{{ order.number }}" class="btn_1">Details</a>
+							</div>
+
+                        <div class="modal fade" id="modal{{ order.number }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+
+      </div>
+      <div class="modal-body">
+
+      <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{% trans 'Quantity' %}</th>
+                      <th scope="col">{% trans 'Menu' %}</th>
+                      <th scope="col">{% trans 'Comment' %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in order.lines.all %}
+                    <tr>
+                      <th style="text-align: left">{{ line.quantity }}</th>
+                      <td style="text-align: left">{{ line.menu }}</td>
+                      <td style="text-align: left">{{ line.comment }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+
+ <strong>Total</strong> : {{ order.total }} - {{ order.pk }}
+
+      </div>
+      <div class="modal-footer">
+                 {% if order.status == 'P'%} <button onclick="accept_order({{ order.pk }})" type="button" class="btn btn-primary">{% trans 'Accept this order' %}</button>{% endif %}
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+						</div>
+                </div>
+            </div>
+                     {% endif %}
+            {% endfor %}
+
+
+
+            </div><!-- End row-->
+  </div>
+  <div id="accepted" class="tab-pane fade">
+ <div class="row">
+
+                 {% for order in orders %}
+                      {% if order.status == 'A'%}
+                        <div class="col-md-3">
+                <div class="box_home" >
+                  <h3>{{ order.status }} - {{ order.number }}</h3>
+                    <p>
+                        {{ order.client.owner.full_name}}<br>
+                        {{ order.created_at }}
+                    </p>
+                    <br>
+                    <div class="go_to">
+							<div>
+								<a data-toggle="modal" data-target="#modal{{ order.number }}" class="btn_1">Details</a>
+							</div>
+
+                        <div class="modal fade" id="modal{{ order.number }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+
+      </div>
+      <div class="modal-body">
+
+      <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{% trans 'Quantity' %}</th>
+                      <th scope="col">{% trans 'Menu' %}</th>
+                      <th scope="col">{% trans 'Comment' %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in order.lines.all %}
+                    <tr>
+                      <th style="text-align: left">{{ line.quantity }}</th>
+                      <td style="text-align: left">{{ line.menu }}</td>
+                      <td style="text-align: left">{{ line.comment }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+
+ <strong>Total</strong> : {{ order.total }} - {{ order.pk }}
+
+      </div>
+      <div class="modal-footer">
+                 {% if order.status == 'P'%} <button onclick="accept_order({{ order.pk }})" type="button" class="btn btn-primary">{% trans 'Accept this order' %}</button>{% endif %}
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+						</div>
+                </div>
+            </div>
+                     {% endif %}
+            {% endfor %}
+
+
+
+            </div><!-- End row-->
+  </div>
+    <div id="ready" class="tab-pane fade">
+ <div class="row">
+
+                 {% for order in orders %}
+                      {% if order.status == 'R'%}
+                        <div class="col-md-3">
+                <div class="box_home" >
+                  <h3>{{ order.status }} - {{ order.number }}</h3>
+                    <p>
+                        {{ order.client.owner.full_name}}<br>
+                        {{ order.created_at }}
+                    </p>
+                    <br>
+                    <div class="go_to">
+							<div>
+								<a data-toggle="modal" data-target="#modal{{ order.number }}" class="btn_1">Details</a>
+							</div>
+
+                        <div class="modal fade" id="modal{{ order.number }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+
+      </div>
+      <div class="modal-body">
+
+      <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{% trans 'Quantity' %}</th>
+                      <th scope="col">{% trans 'Menu' %}</th>
+                      <th scope="col">{% trans 'Comment' %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in order.lines.all %}
+                    <tr>
+                      <th style="text-align: left">{{ line.quantity }}</th>
+                      <td style="text-align: left">{{ line.menu }}</td>
+                      <td style="text-align: left">{{ line.comment }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+
+ <strong>Total</strong> : {{ order.total }} - {{ order.pk }}
+
+      </div>
+      <div class="modal-footer">
+                 {% if order.status == 'P'%} <button onclick="accept_order({{ order.pk }})" type="button" class="btn btn-primary">{% trans 'Accept this order' %}</button>{% endif %}
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+						</div>
+                </div>
+            </div>
+                     {% endif %}
+            {% endfor %}
+
+
+
+            </div><!-- End row-->
+  </div>
+    <div id="picked" class="tab-pane fade">
+ <div class="row">
+
+                 {% for order in orders %}
+                      {% if order.status == 'Pi'%}
+                        <div class="col-md-3">
+                <div class="box_home" >
+                  <h3>{{ order.status }} - {{ order.number }}</h3>
+                    <p>
+                        {{ order.client.owner.full_name}}<br>
+                        {{ order.created_at }}
+                    </p>
+                    <br>
+                    <div class="go_to">
+							<div>
+								<a data-toggle="modal" data-target="#modal{{ order.number }}" class="btn_1">Details</a>
+							</div>
+
+                        <div class="modal fade" id="modal{{ order.number }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+
+      </div>
+      <div class="modal-body">
+
+      <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{% trans 'Quantity' %}</th>
+                      <th scope="col">{% trans 'Menu' %}</th>
+                      <th scope="col">{% trans 'Comment' %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in order.lines.all %}
+                    <tr>
+                      <th style="text-align: left">{{ line.quantity }}</th>
+                      <td style="text-align: left">{{ line.menu }}</td>
+                      <td style="text-align: left">{{ line.comment }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+
+ <strong>Total</strong> : {{ order.total }} - {{ order.pk }}
+
+      </div>
+      <div class="modal-footer">
+                 {% if order.status == 'P'%} <button onclick="accept_order({{ order.pk }})" type="button" class="btn btn-primary">{% trans 'Accept this order' %}</button>{% endif %}
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+						</div>
+                </div>
+            </div>
+                     {% endif %}
+            {% endfor %}
+
+
+
+            </div><!-- End row-->
+  </div>
+    <div id="delivred" class="tab-pane fade">
+ <div class="row">
+
+                 {% for order in orders %}
+                      {% if order.status == 'D'%}
+                        <div class="col-md-3">
+                <div class="box_home" >
+                  <h3>{{ order.status }} - {{ order.number }}</h3>
+                    <p>
+                        {{ order.client.owner.full_name}}<br>
+                        {{ order.created_at }}
+                    </p>
+                    <br>
+                    <div class="go_to">
+							<div>
+								<a data-toggle="modal" data-target="#modal{{ order.number }}" class="btn_1">Details</a>
+							</div>
+
+                        <div class="modal fade" id="modal{{ order.number }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+
+      </div>
+      <div class="modal-body">
+
+      <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{% trans 'Quantity' %}</th>
+                      <th scope="col">{% trans 'Menu' %}</th>
+                      <th scope="col">{% trans 'Comment' %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in order.lines.all %}
+                    <tr>
+                      <th style="text-align: left">{{ line.quantity }}</th>
+                      <td style="text-align: left">{{ line.menu }}</td>
+                      <td style="text-align: left">{{ line.comment }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+
+ <strong>Total</strong> : {{ order.total }} - {{ order.pk }}
+
+      </div>
+      <div class="modal-footer">
+                 {% if order.status == 'P'%} <button onclick="accept_order({{ order.pk }})" type="button" class="btn btn-primary">{% trans 'Accept this order' %}</button>{% endif %}
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+						</div>
+                </div>
+            </div>
+                     {% endif %}
+            {% endfor %}
+
+
+
+            </div><!-- End row-->
+  </div>
+
+</div>
+
+
+
+
+		</div><!-- End col-md-9-->
+
+	</div><!-- End row -->
+</div><!-- End container -->
+<!-- End Content =============================================== -->
+
+<!-- End Content =============================================== -->
+  {% endblock content %}
+
+
+{% block scripts %}
+     <script>
+
+
+        function accept_order(pk){
+
+
+
+      $.ajax({
+                url : "/restaurant/orders/"+pk+"/update/",
+                type : 'POST',
+               data: {
+                         status: 'A',
+                         csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                success: function (json) {
+                        console.log("success");
+
+                    },
+
+                error: function (xhr, errmsg, err) {
+                        {#console.log('error');#}
+                        {#console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console#}
+                }
+
+        });
+      location.reload();
+      {#console.log(formData);#}
+      {#console.log('ok');#}
+      {#console.log(i);#}
+
+        }
+
+
+     </script>
+
+
+
+{% endblock scripts %}

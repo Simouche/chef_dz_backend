@@ -1,0 +1,139 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+<style>
+
+.navbar-custom.costum .nav-item .nav-link {
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	color: #393939;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	text-align: center;
+	font-weight: bold;
+
+
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="content1">
+<h2 class="text-center mt-4">{% trans 'SIGN UP' %}</h2>
+<div class="card" style="background:white;width:50%;margin:auto;margin-bottom:20px">
+    <div class="card-body">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="form-group row">
+                <div class="col">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            <p> <strong>{% trans 'Enter OTP' %}</strong></p>
+        <p class="text-danger">{% trans 'Check your phone for the otp' %}</p>
+
+
+
+            <div class="form-group row" style="text-align:center">
+
+                        <div class="col-sm-12 col-md-12">
+                            <label for="last_name">{% trans 'Code' %} : </label>
+                            {% if form.is_bound %}
+                            {% if form.code.errors %}
+
+                            {% render_field form.code class="form-control browser-default is-invalid" id="code" %}
+                            {% for error in form.code.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.code class="form-control browser-default is-valid" id="code" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.code class="form-control browser-default" id="code" %}
+                            {% endif %}
+
+
+                        </div>
+
+
+            </div>
+
+
+            <div class="text-center clearfix">
+
+                <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
+            </div>
+
+
+        </form>
+
+    </div>
+</div></div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+            <script>
+
+             $(".phone-input").intlTelInput({
+               preferredCountries: ["dz"],
+               utilsScript: "{% static 'intl-tel-input/js/utils.js' %}"
+             });
+             if ($('#phone-number').val() != '') {
+               $(".phone-input").intlTelInput('setNumber', $('#phone-number').val())
+             }
+             $('.phone-input').change(function () {
+                $(this).parent().next().val($(this).intlTelInput("getNumber"))
+             })
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                yearRange: [1900, new Date(new Date().setFullYear(new Date().getFullYear() - 18)).getFullYear()],
+                maxDate:new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
+                defaultDate: new Date((new Date()).getFullYear()-18,1,31),
+
+            })
+             $('.datepicker').on('focus', function (e) {
+                $(this).datepicker('open')
+            })
+            $('.datepicker-modal .btn-flat').on('click', function (e) {
+                $('#' + $('.datepicker').parent().next().find('input').attr('id')).trigger('focus')
+            })
+
+
+
+            </script>
+{% endblock scripts %}

@@ -1,0 +1,316 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+    <!-- SubHeader =============================================== -->
+    <section class="parallax-window" id="short" data-parallax="scroll"
+             data-image-src="{% static 'img/sub_header_cart.jpg' %}" data-natural-width="1400"
+             data-natural-height="350">
+        <div id="subheader">
+            <div id="sub_content">
+                <h1>{% trans 'Add restaurant' %}</h1>
+                <p>lorem upsum lorem upsum lorem upsum lorem upsum lorem upsum </p>
+                <p></p>
+            </div><!-- End sub_content -->
+        </div><!-- End subheader -->
+    </section><!-- End section -->
+    <!-- End SubHeader ============================================ -->
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li><a href="#0">Home</a>
+                </li>
+                <li><a href="#0">Category</a>
+                </li>
+                <li>Page active</li>
+            </ul>
+            <a href="#0" class="search-overlay-menu-btn"><i class="icon-search-6"></i> Search</a>
+        </div>
+    </div><!-- Position -->
+
+    <!-- Content ================================================== -->
+    <div class="container margin_60">
+        <div id="tabs" class="tabs">
+
+            <div class="content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        <div class="form-group row">
+                            <div class="col">
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                                         role="alert">
+                                        {{ message }}
+
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <div class="indent_title_in">
+                        <i class="icon_document_alt"></i>
+                        <h3>{% trans 'Edit menu list' %}</h3>
+                        <p>Partem diceret praesent mel et, vis facilis alienum antiopam ea, vim in sumo diam sonet.
+                            Illud ignota cum te, decore elaboraret nec ea. Quo ei graeci repudiare definitionem. Vim et
+                            malorum ornatus assentior, exerci elaboraret eum ut, diam meliore no mel.</p>
+                    </div>
+
+
+                    {{ form.management_form }}
+                    <div class="wrapper_indent">
+                        {% for forms in form %}
+                            {{ forms.id }}
+                            <div class="form-group row formset_row{{ form.prefix }}">
+                                <div class="menu-item-section clearfix">
+                                    <h4>{% trans 'Menu item' %}</h4>
+                                    {#							<div><a href="#0"><i class="icon_plus_alt"></i></a><a href="#0"><i class="icon_minus_alt"></i></a></div>#}
+                                </div>
+
+                                <div class="strip_menu_items">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="menu-item-pic ">
+                                                {% if forms.is_bound %}
+                                                    {% if forms.image.errors %}
+
+                                                        {% render_field forms.image class="form-control browser-default is-invalid" id="image" %}
+                                                        {% for error in forms.image.errors %}
+                                                            <div class="invalid-feedback">
+                                                                {{ error }}
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% render_field forms.image class="form-control browser-default is-valid" id="image" %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% render_field forms.image class="form-control browser-default" id="image" %}
+                                                {% endif %}
+                                                <div class="dz-default dz-message">
+                                                    <span>Click or Drop<br>Images Here</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label>{% trans 'Title' %}</label>
+                                                        {% if forms.is_bound %}
+                                                            {% if forms.name.errors %}
+
+                                                                {% render_field forms.name class="form-control browser-default is-invalid" id="name" %}
+                                                                {% for error in forms.name.errors %}
+                                                                    <div class="invalid-feedback">
+                                                                        {{ error }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% render_field forms.name class="form-control browser-default is-valid" id="name" %}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% render_field forms.name class="form-control browser-default" id="name" %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>{% trans 'Price' %}</label>
+                                                        {% if forms.is_bound %}
+                                                            {% if forms.price.errors %}
+
+                                                                {% render_field forms.price class="form-control browser-default is-invalid" id="price" %}
+                                                                {% for error in forms.price.errors %}
+                                                                    <div class="invalid-feedback">
+                                                                        {{ error }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% render_field forms.price class="form-control browser-default is-valid" id="price" %}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% render_field forms.price class="form-control browser-default" id="price" %}
+                                                        {% endif %}                                            </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{% trans 'Short description' %}</label>
+                                                {% if forms.is_bound %}
+                                                    {% if forms.description.errors %}
+
+                                                        {% render_field forms.description class="form-control browser-default is-invalid" id="description" %}
+                                                        {% for error in forms.description.errors %}
+                                                            <div class="invalid-feedback">
+                                                                {{ error }}
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% render_field forms.description class="form-control browser-default is-valid" id="description" %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% render_field forms.description rows="3" class="form-control browser-default" id="description" %}
+                                                {% endif %}                                    </div>
+                                            <div class="row">
+{#                                                <div class="col-md-6">#}
+{#                                                    <div class="form-group">#}
+{#                                                        <label>Restaurants</label>#}
+{#                                                        {% if forms.is_bound %}#}
+{#                                                            {% if forms.offered_by.errors %}#}
+{##}
+{#                                                                {% render_field forms.offered_by class="form-control browser-default is-invalid" id="offered_by" %}#}
+{#                                                                {% for error in forms.offered_by.errors %}#}
+{#                                                                    <div class="invalid-feedback">#}
+{#                                                                        {{ error }}#}
+{#                                                                    </div>#}
+{#                                                                {% endfor %}#}
+{#                                                            {% else %}#}
+{#                                                                {% render_field forms.offered_by class="form-control browser-default is-valid" id="offered_by" %}#}
+{#                                                            {% endif %}#}
+{#                                                        {% else %}#}
+{#                                                            {% render_field forms.offered_by class="form-control browser-default" id="offered_by" %}#}
+{#                                                        {% endif %}</div>#}
+{#                                                </div>#}
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Type</label>
+                                                        {% if forms.is_bound %}
+                                                            {% if forms.type.errors %}
+
+                                                                {% render_field forms.type class="form-control browser-default is-invalid" id="type" %}
+                                                                {% for error in forms.type.errors %}
+                                                                    <div class="invalid-feedback">
+                                                                        {{ error }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% render_field forms.type class="form-control browser-default is-valid" id="type" %}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% render_field forms.type class="form-control browser-default" id="type" %}
+                                                        {% endif %}</div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{% trans 'Offer' %}</label>
+                                                        {% if forms.is_bound %}
+                                                            {% if forms.offer.errors %}
+
+                                                                {% render_field forms.offer class="form-control browser-default is-invalid" id="offer" %}
+                                                                {% for error in forms.offer.errors %}
+                                                                    <div class="invalid-feedback">
+                                                                        {{ error }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% render_field forms.offer class="form-control browser-default is-valid" id="offer" %}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% render_field forms.offer class="form-control browser-default" id="offer" %}
+                                                        {% endif %}</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{% trans 'cuisine' %}</label>
+                                                        {% if forms.is_bound %}
+                                                            {% if forms.cuisine.errors %}
+
+                                                                {% render_field forms.cuisine class="form-control browser-default is-invalid" id="cuisine" %}
+                                                                {% for error in forms.cuisine.errors %}
+                                                                    <div class="invalid-feedback">
+                                                                        {{ error }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% render_field forms.cuisine class="form-control browser-default is-valid" id="cuisine" %}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% render_field forms.cuisine class="form-control browser-default" id="cuisine" %}
+                                                        {% endif %}</div>
+                                                </div>
+                                            </div>
+                                            {% if forms.is_bound %}
+                                                {% if forms.number.errors %}
+
+                                                    {% render_field hidden value="1" forms.number class="form-control browser-default is-invalid" id="number" %}
+                                                    {% for error in forms.number.errors %}
+                                                        <div class="invalid-feedback">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {% render_field hidden value="1" forms.number class="form-control browser-default is-valid" id="number" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field hidden value="1"  forms.number class="form-control browser-default" id="number" %}
+                                            {% endif %}
+
+                                        </div>
+                                    </div><!-- End row -->
+                                </div><!-- End strip_menu_items -->
+
+                            </div><!-- End wrapper_indent -->
+                        {% endfor %}
+                    </div>
+                    <hr class="styled_2">
+
+
+                    <div class="wrapper_indent">
+                        <button id="submit" class="btn_1">{% trans 'Save' %}</button>
+                    </div><!-- End wrapper_indent -->
+
+                </form><!-- End section 1 -->
+
+
+            </div>
+        </div><!-- End content -->
+    </div>
+    </div><!-- End container  -->
+    <!-- End Content =============================================== -->
+    <style>
+        .add {
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+    </style>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/dropzone.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+
+    <script>
+        $('.formset_row{{ form.prefix }}').formset({
+            addCssClass: 'add',
+            deleteCssClass: 'add',
+            addText: '<i class="icon_plus_alt"></i> {% trans 'ADD' %}',
+            deleteText: '<i class="fas fa-trash"></i> {% trans 'DELETE' %}',
+            prefix: '{{ form.prefix }}',
+        });
+        {##}
+        {#  $('.fas .fa-plus').addClass( 'icon_plus_alt' );#}
+        {#$( ".icon_plus_alt" ).removeClass( "fas fa-plus" );#}
+
+    </script>
+{% endblock scripts %}

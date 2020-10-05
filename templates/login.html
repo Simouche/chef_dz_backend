@@ -1,0 +1,147 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load extra %}
+
+
+{% if user.is_authenticated %}
+
+    <a data-toggle="dropdown" class="btnn nav-link page-scroll dropdown-toggle">
+        <span>{{ user.first_name }} {{ user.last_name }}</span></a></a>
+    <ul class="dropdown-menu">
+
+        <li>
+            <div class="navbar-login">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <p class="text-center">
+
+                            <img style="border-radius : 50%" width="100px"
+                                 src="{% if user.photo %} {{ user.photo }} {% else %} {% static 'images/man.png' %} {% endif %}">
+                        </p>
+                    </div>
+                    <div class="col-lg-8">
+                        <p class="text-left"><strong> {{ user.first_name }} {{ user.last_name }}</strong></p>
+                        <p class="text-left"> {{ user.phone }} </p>
+                        <p class="text-left small">
+                            {% if request.user.is_authenticated %}
+                                {% if request.user|has_group:"participant" %}
+
+                                    ❤ {{ request.user.scores.likes_ }} ★ {{ request.user.scores.avg }} </p>
+                                {% endif %}
+                            {% endif %}
+                        <p class="text-left">
+                            {% if request.user|has_group:"participant" %}
+                                <a href="{% url 'recipe:user-recipes' pk=user.client.participant.id %}"
+                                   class="btn btn-primary">{% trans "My recipes" %}</a>
+
+
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <div class="navbar-login navbar-login-session">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                        <div class="col text-center"><a href="{% url 'restaurants:logout' %}"><i
+                                class="fas fa-power-off"></i>
+                            {% trans "Logout" %}</a></div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+{% else %}
+
+
+    <a id="dropdownMenu1" data-toggle="dropdown" class="btnn nav-link page-scroll dropdown-toggle">Login <span
+            class="caret"></span></a>
+    <ul style="width : 300px" class="dropdown-menu dropdown-menu-right">
+        <li class="px-3 py-2">
+            <form class="form" action="{% url 'restaurants:login' %}" method="post" role="form">
+                {% csrf_token %}
+                {% if messages %}
+                    <div class="form-group row">
+                        <div class="col">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                                     role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if login_form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% for error in login_form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+
+                <strong>{% trans "SIGN IN" %}</strong>
+
+
+                <div class="form-group">
+
+                    {% if login_form.is_bound %}
+                        {% if login_form.username.errors %}
+
+                            {% render_field login_form.username class="form-control browser-default" id="username" %}
+                            {% for error in login_form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {% render_field login_form.username class="form-control browser-default" id="username" %}
+                        {% endif %}
+                    {% else %}
+                        {% render_field login_form.username class="form-control browser-default" id="username" %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+
+                    {% if login_form.is_bound %}
+                        {% if login_form.password.errors %}
+
+                            {% render_field login_form.password class="form-control browser-default" id="password" %}
+                            {% for error in login_form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {% render_field login_form.password class="form-control browser-default" id="password" %}
+                        {% endif %}
+                    {% else %}
+                        {% render_field login_form.password class="form-control browser-default" id="password" %}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-secondary"> {% trans "LOGIN" %}</button>
+                    <br>
+                    <small><a href="{% url 'restaurants:register' %}">{% trans "SIGN Up" %}?</a></small>
+                </div>
+            </form>
+        </li>
+    </ul>
+
+{% endif %}

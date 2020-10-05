@@ -1,0 +1,706 @@
+
+
+
+/******************************/
+/*     01. General Styles     */
+/******************************/
+body,
+html {
+     display:flex;
+     flex-direction:column;
+     width: 100%;
+}
+i{
+            cursor: pointer;
+}
+body,a{
+	color: #626262;
+	font: 400 0.875rem/1.375rem "Raleway", sans-serif;
+}
+.btn-vert{
+	display: inline-block;
+	color: white;
+	font: 600 0.875rem/0.875rem "Raleway", sans-serif;
+
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	border: 0.125rem solid #66D1C8;
+	border-radius: 02rem;
+	background-color: #66D1C8;
+	transition: all 0.2s;
+}
+.btn-vert:hover {
+	background-color: transparent;
+	color: #66D1C8;
+	text-decoration: none;
+}
+.vert{
+	background-color: #66D1C8;
+	border-radius: 0;
+}
+.insideinput{
+
+	float: left;
+	margin-left: 5px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
+}
+.insideinputeye{
+
+	float: right;
+	margin-right: 6px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
+}
+
+.title-filter{
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	color: black;
+}
+
+.filter-name:hover{
+	color: #66D1C8;
+	text-decoration: none;
+
+}
+.filter-name{
+
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	float: left;
+	font-weight:bold;
+    color : #626262;
+}
+.filter-name.selected{
+
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	float: left;
+	color: #66D1C8;
+
+}
+.filter-info{
+
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	float: right;
+	font-style: italic;
+}
+.dropdown-divider{
+	width: 50%;  margin: auto;margin-bottom: 10px;margin-top: 10px;
+}
+
+.hide{
+	display: none;
+}
+
+.footer {
+    margin-top: auto;
+    width:100%;
+	padding-top: 2rem;
+	padding-bottom:2rem;
+	background-color: #66D1C8;
+	color: #fff;
+
+}
+.weare {
+	background: url('../images/Groupe.png') center center no-repeat;
+	background-size: cover;
+	height: 50%;
+}
+
+label{
+
+    font-weight: bold;
+}
+/* datepicker */
+
+.datepicker-modal,
+.timepicker-modal {
+    height: auto;
+    left: auto;
+}
+
+.datepicker-container,
+.timepicker-container {
+    border: none;
+}
+
+
+
+
+/**** navbar login **/
+
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+
+
+.avatar {
+		border-radius: 50%;
+		vertical-align: middle;
+		height:50px;
+}
+
+
+/*****/
+
+
+
+
+
+/*  add recipe */
+.uploader {
+            opacity: 0;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+        }
+        .uploader:hover{
+            cursor: pointer;
+        }
+        img.recetteimage{
+                    max-width:100%;
+                    max-height:300px;
+                    align:center;
+        }
+        .recetteimg,.recetteimg1 {
+            width: auto;
+            height: auto;
+            margin-top: 5px;
+            border: 2px dashed #8c8b8b;
+        }
+        .recetteimg:hover,.recetteimg1:hover{
+            border: 2px dashed #000;
+
+        }
+        .img-wrapper,.img-wrapper1  {
+            position: relative;
+            width: auto;
+        }
+
+        .img-overlay,.img-overlay1 {
+            position: absolute;
+            float: left;
+            right: 0px;
+            top: 0px;
+        }
+
+        .img-overlay:hover,.img-overlay1:hover,img-overlay2:hover{
+        color:red;}
+
+/***** add recipe */
+
+
+
+
+/* langauge form */
+
+.custom-select2 {
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    background-color : white;
+}
+
+.custom-select2 .select-bf {
+    width: auto;
+    height: auto;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    display: inline;
+}
+
+.custom-select2 .select-bf::-ms-expand {
+    display: none;
+}
+
+.custom-select2:after {
+    position: absolute;
+    top: .65em;
+    right: 1em;
+    width: 0;
+    height: 0;
+    padding: 0;
+    content: '';
+    border-left: .25em solid transparent;
+    border-right: .25em solid transparent;
+    border-top: .375em solid black;
+    pointer-events: none;
+}
+
+.custom-select2::before {
+    content: "\f0ac";
+    padding-left: 5px;
+}
+
+.custom-select2 option {
+    width: auto;
+}
+
+
+
+
+/***** view recipe ***/
+.item{
+	margin-bottom: 5px;
+}
+.item:hover{
+	box-shadow: 1px 0px 0px #555;
+	cursor: pointer;
+
+}
+
+.item.list .image .imgcuisine {
+float: left;
+}
+
+.item.list .image{
+	float: left;margin: 0;padding: 0;width:35%;
+}
+.item.list .texte{
+	float: left; margin-left: 10px;margin-top: 5px;width: 60%;
+}
+.item.list .texte .texterecipe{
+	text-align: left;font-size: large;margin: 0;padding: 0;
+}
+
+
+.item.grid  .texterecipe{
+text-align: left;
+	margin: 0;
+	padding: 0;
+	}
+
+.item.grid  .descriptionrecipe{
+display:none;height:130px; overflow: auto;
+	}
+
+
+
+/*******rating*/
+
+/******/
+
+/* Tabs*/
+section {
+	padding: 20px 0;
+}
+
+
+#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+	background-color: transparent;
+	border-color: transparent transparent #f3f3f3;
+	border-bottom: 4px solid !important;
+	font-size: 20px;
+	font-weight: bold;
+
+}
+#tabs .nav-tabs .nav-link {
+	border: 1px solid transparent;
+	border-top-left-radius: .25rem;
+	border-top-right-radius: .25rem;
+	font-size: 20px;
+}
+
+
+/****recipe ****/
+/*************************/
+/*     02. Preloader     */
+/*************************/
+.spinner-wrapper {
+	position: fixed;
+	z-index: 999999;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: #fff;
+}
+
+.spinner {
+	position: absolute;
+	top: 50%; /* centers the loading animation vertically one the screen */
+	left: 50%; /* centers the loading animation horizontally one the screen */
+	width: 3.75rem;
+	height: 1.25rem;
+	margin: -0.625rem 0 0 -1.875rem; /* is width and height divided by two */
+	text-align: center;
+}
+
+.spinner > div {
+	display: inline-block;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 100%;
+	background-color: #66D1C8;
+	-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+	animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+	0%, 80%, 100% { -webkit-transform: scale(0); }
+	40% { -webkit-transform: scale(1.0); }
+}
+
+@keyframes sk-bouncedelay {
+	0%, 80%, 100% {
+		-webkit-transform: scale(0);
+		-ms-transform: scale(0);
+		transform: scale(0);
+	} 40% {
+		-webkit-transform: scale(1.0);
+		-ms-transform: scale(1.0);
+		transform: scale(1.0);
+	}
+}
+
+
+
+/**********************************/
+/*     18. Back To Top Button     */
+/**********************************/
+a.back-to-top {
+	position: fixed;
+	z-index: 999;
+	right: 0.75rem;
+	bottom: 0.75rem;
+	display: none;
+	width: 2.625rem;
+	height: 2.625rem;
+	border-radius: 1.875rem;
+	background: #66D1C8 url("../images/up-arrow.png") no-repeat center 47%;
+	background-size: 1.125rem 1.125rem;
+	text-indent: -9999px;
+}
+
+a:hover.back-to-top {
+	background-color: #66D1C8;
+}
+
+/**************************/
+/*     03. Navigation     */
+/**************************/
+.navbar-collapse.collapse.show .nav .nav-item .page-scroll{
+        color:#393939;
+}
+
+.navbar-custom {
+
+	box-shadow: 0 0.0625rem 0.375rem 0 rgba(0, 0, 0, 0.1);
+	font: 600 0.875rem/0.875rem "Raleway", sans-serif;
+	transition: all 0.2s;
+}
+.navbar-custom .navbar-brand.logo-image img {
+    width: 7.4375rem;
+	height: 2rem;
+}
+
+.navbar-custom .navbar-brand.logo-text {
+	font: 600 2rem/1.5rem "Raleway", sans-serif;
+	color: #393939;
+	text-decoration: none;
+}
+
+.navbar-custom .navbar-nav {
+	margin-top: 0.75rem;
+	margin-bottom: 0.5rem;
+
+}
+
+.navbar-custom .nav-item .nav-link {
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	color: #fff;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	text-align: center;
+	font-weight: bold;
+
+
+}
+
+
+.navbar-custom .nav-item .nav-link:hover,
+.navbar-custom .nav-item .nav-link.active {
+	color: #38E83B;
+
+}
+
+/* Dropdown Menu */
+.navbar-custom .dropdown:hover > .dropdown-menu {
+	min-width: auto;
+}
+
+
+
+.navbar-custom .dropdown-toggle:focus { /* removes dropdown outline on focus */
+	outline: 0;
+}
+
+.navbar-custom .dropdown-menu {
+	margin-top: 10px;
+	border: none;
+	border-radius: 0.25rem;
+	background-color: #red;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.navbar-custom .dropdown-item {
+	color: #393939;
+	text-decoration: none;
+}
+
+.navbar-custom .dropdown-item:hover {
+	background-color: #fff;
+}
+
+.navbar-custom .dropdown-item .item-text {
+	font: 600 0.875rem/0.875rem "Raleway", sans-serif;
+}
+
+.navbar-custom .dropdown-item:hover .item-text {
+	color: red;
+}
+
+.navbar-custom .dropdown-items-divide-hr {
+	width: 100%;
+	height: 1px;
+	margin: 0.75rem auto 0.725rem auto;
+	border: none;
+	background-color: #c4d8dc;
+	opacity: 0.2;
+}
+/* end of dropdown menu */
+
+
+
+.navbar-custom .navbar-toggler {
+	border: none;
+	color: #393939;
+	font-size: 2rem;
+}
+
+.navbar-custom button[aria-expanded='false'] .navbar-toggler-awesome.fas.fa-times{
+	display: none;
+}
+
+.navbar-custom button[aria-expanded='false'] .navbar-toggler-awesome.fas.fa-bars{
+	display: inline-block;
+}
+
+.navbar-custom button[aria-expanded='true'] .navbar-toggler-awesome.fas.fa-bars{
+	display: none;
+}
+
+.navbar-custom button[aria-expanded='true'] .navbar-toggler-awesome.fas.fa-times{
+	display: inline-block;
+	margin-right: 0.125rem;
+}
+
+/*****************************/
+/*     20. Media Queries     */
+/*****************************/
+/* Min-width width 768px */
+
+@media (min-width: 0px) {
+
+	.content{
+		margin-top: 94px;
+	}.content1{
+		margin-top: 50px;
+	}
+	.filters{
+		display: none;
+	}
+
+	.navbar-custom{
+		background: #fff;
+	}
+
+	/* end of extra pages */
+}
+/* end of min-width width 768px */
+@media (max-width: 500px) {
+
+
+.item.grid .image .imgcuisine {
+float: left;
+}
+
+.item.grid .image{
+	float: left;margin: 0;padding: 0;width:35%;
+}
+.item.grid .texte{
+	float: left; margin-left: 10px;margin-top: 5px;width: 60%;
+}
+.item.grid .texte .texterecipe{
+	text-align: left;font-size: large;margin: 0;padding: 0;
+}
+	.item.grid  .descriptionrecipe{
+display:block;height:130px; overflow: auto;
+	}
+	.gridlist{
+		display: none;
+	}
+
+}
+
+/* Min-width width 992px */
+@media (min-width: 992px) {
+
+	.filters{
+		display: none;
+	}
+	.content{
+		margin-top: 0px;
+	}.content1{
+		margin-top: 94px;
+	}
+	/* Navigation */
+	.navbar-custom {
+		padding: 0.5rem 1.5rem 0.5rem 2rem;
+		box-shadow: none;
+		background: transparent;
+
+	}
+
+	.navbar-custom .navbar-nav {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.navbar-custom .nav-item .nav-link .btnn {
+		padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+		color: red;
+		opacity: 0.8;
+
+	}
+
+	.navbar-custom .nav-item .nav-link:hover,
+	.navbar-custom .nav-item .nav-link.active {
+		color: #66D1C8;
+		opacity: 1;
+	}
+
+	.navbar-custom.top-nav-collapse {
+        padding: 0.5rem 1.5rem 0.5rem 2rem;
+		box-shadow: 0 0.0625rem 0.375rem 0 rgba(0, 0, 0, 0.1);
+		background: #fff;
+	}
+
+	.navbar-custom.top-nav-collapse .nav-item .nav-link {
+		color: #393939;
+		opacity: 1;
+	}
+
+	.navbar-custom.top-nav-collapse .nav-item .nav-link:hover,
+	.navbar-custom.top-nav-collapse .nav-item .nav-link.active {
+		color: #66D1C8;
+	}
+
+	.navbar-custom .dropdown-menu {
+        margin-top: 0px;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+		border-radius: 0.25rem;
+	}
+
+	.navbar-custom.top-nav-collapse .dropdown-menu {
+		border-top: 1.5rem solid rgba(0, 0, 0, 0);
+		box-shadow: 0 0.375rem 0.375rem 0 rgba(0, 0, 0, 0.02);
+
+	}
+
+	.navbar-custom .dropdown-item {
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
+	}
+
+	.navbar-custom .dropdown-items-divide-hr {
+		width: 84%;
+	}
+
+	.navbar-custom .social-icons {
+		display: block;
+		margin-left: 0.5rem;
+	}
+
+
+
+
+}
+/***** dropdown sign in ***/
+
+.navbar .nav .nav-item .dropdown-menu .form-control {
+
+	width: 250px;
+}
+/****/
+
+
+/* end of min-width width 992px */
+
+
+
+/* Min-width width 1200px */
+@media (min-width: 1200px) {
+	.filters{
+		display: block;
+	}
+	/* Navigation */
+	.navbar-custom {
+		padding: 0.5rem 5rem 0.5rem 5rem;
+	}
+	.navbar-custom.top-nav-collapse {
+        padding: 0rem 5rem 0rem 5rem;
+		background: #fff;
+
+
+	}
+	.navbar-custom.top-nav-collapse .dropdown-menu {
+	    margin-top:0rem;
+		border-top: 0rem solid rgba(0, 0, 0, 0);
+		box-shadow: 0 0.375rem 0.375rem 0 rgba(0, 0, 0, 0.02);
+	}
+	/* end of navigation */
+
+
+}

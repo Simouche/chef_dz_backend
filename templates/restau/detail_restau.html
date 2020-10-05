@@ -1,0 +1,261 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+    <!-- SubHeader =============================================== -->
+    <section class="parallax-window" data-parallax="scroll" data-image-src="img/sub_header_2.jpg"
+             data-natural-width="1400" data-natural-height="470">
+        <div id="subheader">
+            <div id="sub_content">
+                <div id="thumb"><img src="{% if restaurant.logo %}{{ restaurant.logo.url }}{% endif %}" alt=""></div>
+                <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                        class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i> ( <small><a
+                        href="#0">98 reviews</a></small> )
+                </div>
+                <h1>{{ restaurant.name }}</h1>
+
+                <div><em>  {% for type in restaurant.types.all %} {{ type }} {% endfor %}</em></div>
+                <div><i class="icon_pin"></i> {{ restaurant.address }}- <strong>Delivery charge:</strong> $10, free over
+                    $15.
+                </div>
+            </div><!-- End sub_content -->
+        </div><!-- End subheader -->
+    </section><!-- End section -->
+    <!-- End SubHeader ============================================ -->
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li><a href="#0">Home</a></li>
+                <li><a href="#0">Category</a></li>
+                <li>Page active</li>
+            </ul>
+            <a href="#0" class="search-overlay-menu-btn"><i class="icon-search-6"></i> Search</a>
+        </div>
+    </div><!-- Position -->
+
+    <div class="collapse" id="collapseMap">
+        <div id="map"></div>
+    </div><!-- End Map -->
+
+    <!-- Content ================================================== -->
+    <div class="container margin_60_35">
+        <div class="row">
+
+            <div class="col-md-4">
+                <p>
+                    <a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false"
+                       aria-controls="collapseMap">{% trans 'View on map' %}</a>
+                </p>
+                <p>
+                    <a href="{% url 'restaurants:list-restaurant-menu' restaurant.pk %}" class="btn_map">{% trans 'View menu' %}</a>
+                </p>
+                <div class="box_style_2">
+                    <h4 class="nomargin_top">{% trans 'Opening time' %} : {{ restaurant.open_at }} - {{ restaurant.close_at }}<i
+                            class="icon_clock_alt pull-right"></i></h4>
+
+                    {#					<ul class="opening_list">#}
+                    {#						<li>Monday<span>12.00am-11.00pm</span></li>#}
+                    {#						<li>Tuesday<span>12.00am-11.00pm</span></li>#}
+                    {#						<li>Wednesday <span class="label label-danger">Closed</span></li>#}
+                    {#						<li>Thursday<span>12.00am-11.00pm</span></li>#}
+                    {#						<li>Friday<span>12.00am-11.00pm</span></li>#}
+                    {#						<li>Saturday<span>12.00am-11.00pm</span></li>#}
+                    {#						<li>Sunday <span class="label label-danger">Closed</span></li>#}
+                    {#					</ul>#}
+                </div>
+
+            </div>
+
+            <div class="col-md-8">
+                <div class="box_style_2">
+                    <h2 class="inner">{% trans 'Description' %}</h2>
+                    <div id="Img_carousel" class="slider-pro">
+                        <div class="sp-slides">
+                            {% for url in restaurant.images_urls %}
+                                <div class="sp-slide">
+                                    <img alt="" class="sp-image" src=" {{ url }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="sp-thumbnails">
+                            {% for url in restaurant.images_urls %}
+                                <img alt="" class="sp-thumbnail" src="{{ url }}">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <h3>{% trans 'About us' %}</h3>
+                    <p>
+
+                        {{ restaurant.description }}                    </p>
+
+
+                    <div id="summary_review">
+                        <div id="general_rating">
+                            11 Reviews
+                            <div class="rating">
+                                <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                    class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                            </div>
+                        </div>
+
+                        <div class="row" id="rating_summary">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>Food Quality
+                                        <div class="rating">
+                                            <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star voted"></i><i class="icon_star"></i><i
+                                                class="icon_star"></i>
+                                        </div>
+                                    </li>
+                                    <li>Price
+                                        <div class="rating">
+                                            <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star"></i>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>Punctuality
+                                        <div class="rating">
+                                            <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                        </div>
+                                    </li>
+                                    <li>Courtesy
+                                        <div class="rating">
+                                            <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                                class="icon_star"></i>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div><!-- End row -->
+                        <hr class="styled">
+                        <a href="#" class="btn_1 add_bottom_15" data-toggle="modal" data-target="#myReview">Leave a
+                            review</a>
+                    </div><!-- End summary_review -->
+
+                    <div class="review_strip_single">
+                        <img src="img/avatar1.jpg" alt="" class="img-circle">
+                        <small> - 10 March 2015 -</small>
+                        <h4>Jhon Doe</h4>
+                        <p>
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum
+                            consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum
+                            primis in faucibus."
+                        </p>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="rating">
+                                    <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star voted"></i>
+                                </div>
+                                Food Quality
+                            </div>
+                            <div class="col-md-3">
+                                <div class="rating">
+                                    <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                </div>
+                                Price
+                            </div>
+                            <div class="col-md-3">
+                                <div class="rating">
+                                    <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star"></i>
+                                </div>
+                                Punctuality
+                            </div>
+                            <div class="col-md-3">
+                                <div class="rating">
+                                    <i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star voted"></i><i class="icon_star voted"></i><i
+                                        class="icon_star"></i>
+                                </div>
+                                Courtesy
+                            </div>
+                        </div><!-- End row -->
+                    </div><!-- End review strip -->
+
+
+                </div><!-- End box_style_1 -->
+            </div>
+        </div><!-- End row -->
+    </div><!-- End container -->
+    <!-- End Content =============================================== -->
+
+    <!-- End container -->
+
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript">
+
+        function initMap() {
+
+
+            var lat = ({{ restaurant.latitude }});
+            var long = ({{ restaurant.longitude }});
+
+
+            console.log(lat);
+            var mapOptions = {
+                zoom: 8,
+                center: {lat: lat, lng: 150.644}
+            };
+            map = new google.maps.Map(document.getElementById('map'),
+                mapOptions);
+
+            var marker = new google.maps.Marker({
+                // The below line is equivalent to writing:
+                // position: new google.maps.LatLng(-34.397, 150.644)
+                position: {lat: -34.397, lng: 150.644},
+                map: map
+            });
+
+            // You can use a LatLng literal in place of a google.maps.LatLng object when
+            // creating the Marker object. Once the Marker object is instantiated, its
+            // position will be available as a google.maps.LatLng object. In this case,
+            // we retrieve the marker's position using the
+            // google.maps.LatLng.getPosition() method.
+            var infowindow = new google.maps.InfoWindow({
+                content: '<p>Location:' + marker.getPosition() + '</p>'
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.open(map, marker);
+            });
+
+        }
+
+        $(document).ready(function ($) {
+            $('#Img_carousel').sliderPro({
+                width: 960,
+                height: 500,
+                fade: true,
+                arrows: true,
+                buttons: false,
+                fullScreen: false,
+                smallSize: 500,
+                startSlide: 0,
+                mediumSize: 1000,
+                largeSize: 3000,
+                thumbnailArrows: true,
+                autoplay: false
+            });
+
+
+        });
+    </script>
+{% endblock scripts %}

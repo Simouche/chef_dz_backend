@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+    <style>
+
+        .navbar-custom.costum .nav-item .nav-link {
+            padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+            color: #393939;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-weight: bold;
+
+
+        }
+    </style>
+{% endblock styles %}
+
+{% block content %}
+
+
+    <div class="content1">
+        <div class="card" style="background:white;width:50%;margin:auto;margin-top:50px;margin-bottom:20px">
+            <div class="card-body" style="text-align:center">
+                <h1>{% trans "COMING SOON" %}</h1>
+                <h2>{% trans "The Service of restaurant will be available After Ramadahn, This will provide you the access to all the restaurant on your area" %}</h2>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script>
+
+
+    </script>
+{% endblock scripts %}

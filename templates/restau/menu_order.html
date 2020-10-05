@@ -1,0 +1,314 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+
+    <!-- SubHeader =============================================== -->
+    <section class="parallax-window" data-parallax="scroll" data-image-src="img/sub_header_2.jpg"
+             data-natural-width="1400" data-natural-height="470">
+        <div id="subheader">
+            <div id="sub_content">
+                <div id="thumb"><img src="img/thumb_restaurant.jpg" alt=""></div>
+                <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                        class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i> (<small><a
+                        href="detail_page_2.html">Read 98 reviews</a></small>)
+                </div>
+                <h1>{{ restaurant.name }}</h1>
+                <div><em>Mexican / American</em></div>
+                <div><i class="icon_pin"></i> 135 Newtownards Road, Belfast, BT4 1AB - <strong>Delivery charge:</strong>
+                    $10, free over $15.
+                </div>
+            </div><!-- End sub_content -->
+        </div><!-- End subheader -->
+    </section><!-- End section -->
+    <!-- End SubHeader ============================================ -->
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li><a href="#0">Home</a></li>
+                <li><a href="#0">Category</a></li>
+                <li>Page active</li>
+            </ul>
+            <a href="#0" class="search-overlay-menu-btn"><i class="icon-search-6"></i> Search</a>
+        </div>
+    </div><!-- Position -->
+
+    <!-- Content ================================================== -->
+    <div class="container margin_60_35">
+        <div class="row">
+            <div class="col-md-3">
+
+
+                <p><a onClick="javascript:window.history.go(-1)" class="btn_side">Back</a></p>
+                <div class="box_style_1" id="sidebar">
+                    <div class="theiaStickySidebar">
+                        <ul id="cat_nav">
+
+                            {% for menu in menu_list %}
+                                <li><a href="#{{ menu.type }}" class="active">{{ menu.type }}<span>(10)</span></a></li>
+                            {% endfor %}
+
+
+                        </ul>
+                    </div>
+                </div><!-- End box_style_1 -->
+
+
+            </div><!-- End col-md-3 -->
+
+
+
+			<div class="col-md-6">
+				<div class="box_style_2" id="main_menu">
+
+					<h2 class="inner">Menu</h2>
+					<h3 class="nomargin_top" id="starters">type 1</h3>
+					<p>
+					</p>
+					<table class="table table-striped cart-list">
+					<thead>
+					<tr>
+						<th>
+							 {% trans 'Item' %}
+						</th>
+						<th>
+							 {% trans 'Price' %}
+						</th>
+<th>
+							 {% trans 'Order' %}
+						</th>
+
+
+					</tr>
+					</thead>
+					<tbody>
+                                            {% for menu in menu_list %}
+
+					<tr>
+						<td>
+                        	<figure class="thumb_menu_list"><img src="{% if menu.image %} {{ menu.image.url }} {% endif %}" alt="thumb"></figure>
+							<h5>{{ menu.name }}</h5>
+							<p>
+                                {{ menu.description }}
+
+							</p>
+						</td>
+						<td>
+							<strong>{{menu.price}}</strong>
+						</td>
+
+                    	<td class="options">
+							<a onclick="add_to_cart('{{ menu.name }}','{{ menu.price }}',' {{ menu.pk }}')"><i class="icon_plus_alt2"></i></a>
+						</td>
+					</tr>
+			{% endfor %}
+
+					</tbody>
+					</table>
+					<hr>
+
+
+				</div>
+                <div class="box_style_2">
+					<h2 class="inner">Payment methods</h2>
+
+					<div class="payment_select nomargin">
+						<label><input type="radio" checked value="" name="payment_method" class="icheck">Pay with cash</label>
+						<i class="icon_wallet"></i>
+					</div><div class="payment_select nomargin" id="paypal">
+						<label><input type="radio"  value="" name="payment_method" class="icheck">Pay with cash</label>
+					</div>
+                    	<div class="payment_select nomargin">
+						<label><input type="radio"  value="" name="payment_method" class="icheck">Other methodes</label>
+						<i class="icon_wallet"></i>
+					</div>
+
+				</div>
+
+                <!-- End box_style_1 -->
+			</div><!-- End col-md-6 -->
+
+
+			<div class="col-md-3" id="sidebar">
+            	<div class="theiaStickySidebar">
+				<div id="cart_box">
+					<h3>{% trans 'Your order' %} <i class="icon_cart_alt pull-right"></i></h3>
+					<table class="table table_summary">
+                        <form id="formtry">
+					<tbody class="orders">
+
+
+
+					</tbody></form>
+					</table>
+					<hr>
+
+					<div class="row" id="options_2">
+						<div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+							<label><input type="radio" value="" checked name="option_2" class="icheck">Delivery</label>
+						</div>
+						<div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+							<label><input type="radio" value="" name="option_2" class="icheck">Take Away</label>
+						</div>
+					</div><!-- Edn options 2 -->
+					<hr>
+					<table class="table table_summary">
+					<tbody>
+					<tr>
+						<td>
+							 {% trans 'Subtotal' %} <span class="pull-right"><span class="subtotal">0</span> DA</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 {% trans 'Delivery fee' %} <span class="pull-right">---</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+                            {% trans 'TOTAL' %} <span class="pull-right"><span class="total">0</span> DA</span>
+						</td>
+					</tr>
+					</tbody>
+					</table>
+					<hr>
+                    <a class="btn_full" onclick="submit_order()">{% trans 'Confirm your order' %}</a>
+				</div><!-- End cart_box -->
+
+
+                        </tbody>
+                    </table>
+                    <hr>
+
+
+                </div><!-- End box_style_1 -->
+            </div><!-- End col-md-6 -->
+
+
+
+        </div><!-- End row -->
+
+
+
+    </div><!-- End container -->
+    <!-- End Content =============================================== -->
+
+
+
+    <form id="order_form">
+
+
+    </form>
+{% endblock content %}
+
+{% block scripts %}
+     <script>
+
+      $('.formset_row{{ order_form.prefix }}').formset({
+               addText: '<i class="icon_plus_alt"></i> {% trans 'ADD' %}',
+              deleteText: '<i class="fas fa-trash"></i> {% trans 'DELETE' %}',
+                prefix: '{{ form.prefix }}',
+            });
+
+      function add_to_cart(menu,price,pk) {
+            var drapeau=0;
+         $('.orders > tr').each(function() {
+             if ($(this).find('.menu_name').html() == menu ) {
+                 var qte = $( this ).find( ".qte" ).html();
+                 qte=parseInt(qte)+1;
+                 $( this ).find( ".qte" ).html(qte);
+                 drapeau=1;
+                 return false;
+             }
+             })
+
+          if(drapeau==0){
+               order="<tr>\n" +
+                   "\t\t\t\t\t\t<td>\n" +
+                   " <a onclick=\"remove_from_cart(this)\" class=\"remove_item\"><i class=\"icon_minus_alt\"></i></a> <strong class=\"qte\">1</strong>x <span class=\"menu_name\">"+menu+ "</span><span hidden class='pk'>"+pk+"</span> \n" +
+                   "\t\t\t\t\t\t</td>\n" +
+                   "\t\t\t\t\t\t<td>\n" +
+                   "\t\t\t\t\t\t\t<strong class=\"pull-right price\">"+price+"</strong>\n" +
+                   "\t\t\t\t\t\t</td>\n" +
+                   "\t\t\t\t\t</tr>"
+
+
+          tableBody = $(".orders");
+          tableBody.append(order);
+          }
+           var subtotal=0;
+            $('.orders > tr').each(function() {
+
+               subtotal=subtotal+ parseInt($( this ).find( ".qte" ).html()) * parseInt($(this).find('.price').html());
+
+
+             })
+            $('.total').html(subtotal);
+            $('.subtotal').html(subtotal);
+      }
+      function remove_from_cart(ok) {
+          var qte = $( ok ).parent().find( ".qte" ).html();
+
+           if(qte > 1){
+               qte=qte-1;
+               $( ok ).parent().find( ".qte" ).html(qte);
+           } else if (qte==1){
+               $( ok ).parent().parent().remove();
+           }
+
+      }
+        function submit_order(){
+            order="<input hidden name=\"csrfmiddlewaretoken\" value=\"{{ csrf_token }}\">" +
+                  "<input hidden id=\"totalform\" name=\"form-TOTAL_FORMS\" value=\"0\"> <input hidden name=\"form-INITIAL_FORMS\" value=\"0\">"+
+                  "<input hidden id=\"latitude\" name=\"latitude\" value=\"0\"> <input hidden name=\"longitude\" value=\"0\">"
+            $("#order_form").append(order);
+
+            var i=0;
+             $('.orders > tr').each(function() {
+                 order = " <input hidden name='form-"+i+"-number' value="+(i+1)+" >" +
+                         "<input hidden name='form-"+i+"-menu' value="+$(this).find('.pk').html()+" >" +
+                         "<input hidden name='form-"+i+"-quantity', ' value="+$(this).find('.qte').html()+" >"
+
+                 $("#order_form").append(order);
+
+                  i++;
+                 $('#totalform').val(i);
+             })
+            {#console.log($('#order_form').serialize())#}
+
+
+      $.ajax({
+                url : "/restaurant/orders/create/",
+                type : 'POST',
+               data: $('#order_form').serialize(),
+
+                success: function (json) {
+                        console.log("success");
+
+                    },
+
+                error: function (xhr, errmsg, err) {
+                        {#console.log('error');#}
+                        {#console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console#}
+                }
+
+        });
+
+      {#console.log(formData);#}
+      {#console.log('ok');#}
+      {#console.log(i);#}
+
+        }
+
+
+     </script>
+
+
+
+{% endblock scripts %}

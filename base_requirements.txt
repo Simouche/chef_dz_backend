@@ -1,0 +1,7 @@
+django
+Pillow
+djangorestframework
+requests
+firebase_admin
+mysqlclient==1.4.2.post1
+django_widget_tweaks

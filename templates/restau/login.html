@@ -1,0 +1,32 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load extra %}
+
+
+{% if user.is_authenticated %}
+
+ <li class="submenu"><a class="show-submenu">{{user.full_name }}<i class="icon-down-open-mini"></i></a>
+                     <ul >
+                         <li align="center" class="">
+                           <img class="img-circle" style="height:100px;padding:2%;" src="{%  if user.photo  %} {{user.photo.url}} {% else %} {% static 'images/man.png' %} {% endif %}" />
+                         <h5>{{ user.full_name }}</h5>
+                         </li>
+                      {% if request.user|has_group:"owner" %}
+                    <li><a href="{% url 'restaurants:list-restaurant' %}" class="btn btn-sm btn-default"><span class="icon-cog-5"></span> Restaurant</a></li>
+
+
+                         {% elif request.user|has_group:"staff"   %}
+                    <li><a href="{% url 'restaurants:list-order' %}" class="btn btn-sm btn-default"><span class="icon-cog-5"></span> Orders</a></li>
+
+                                        {% endif %}
+                     <li><a href="{%  url 'restaurants:logout'  %}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                    </li>
+{% else %}
+                    <li><a href="{%  url 'restaurants:login'  %}">Login</a></li>
+
+
+
+
+{% endif %}

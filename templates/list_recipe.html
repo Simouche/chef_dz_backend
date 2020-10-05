@@ -1,0 +1,30 @@
+  <div style="margin-top: 10px" class="row recipes">
+                        {% for recipe in data %}
+
+                        <div class="item col-sm-3 grid"
+                             onclick="window.open('{% url 'recipe:recipe-details' pk=recipe.pk %}', '_self')">
+
+
+                            <div class="image">
+                                <img style="height:150px" class="imgcuisine" src="{{ recipe.main.url }}" width="100%">
+
+
+                            </div>
+                            <div class="texte">
+                                <p class="texterecipe"><strong>{{ recipe.food_name }} </strong></p>
+                                <p style="display:none;height:130px; overflow: auto;"
+                                   class="texterecipe descriptionrecipe">{{ recipe.description }}</p></div>
+                            <div class="by">
+                                <p style="float:left;margin-left: 2px">By
+                                    {{recipe.published_by.profile.owner.username}}</p><span style="float:right;"> {% if recipe.avg%} {{recipe.avg}} {%else%} 0 {%endif%}<i
+                                    class="fa fa-star mauve"></i> {{recipe.likes_}}❤  {{recipe.comments_}} <i
+                                    class="fas fa-comments"></i></span></div>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>

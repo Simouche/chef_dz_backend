@@ -1,0 +1,482 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+
+<!-- SubHeader =============================================== -->
+<section class="parallax-window" data-parallax="scroll" data-image-src="" data-natural-width="1400" data-natural-height="200">
+    <div id="subheader" >
+	<div id="sub_content" style="">
+                    <h1>{% trans 'Register' %}</h1>
+        <p>loram upsum loram upsumloram upsumloram upsumloram upsumloram upsum</p>
+    </div><!-- End sub_content -->
+</div><!-- End subheader -->
+</section><!-- End section -->
+<!-- End SubHeader ============================================ -->
+
+
+<!-- Content ================================================== -->
+<div class="container margin_60_35">
+
+<div class="card" >
+    <div class="card-body">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="form-group row">
+                <div class="col">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            <p> <strong>{% trans 'COMPLETE YOUR DETAILS BELOW' %}</strong></p>
+        <p class="text-danger">{% trans 'All fields with * are required' %}</p>
+
+
+
+            <div class="form-group row d-none">
+
+                        <div class="col-sm-12 col-md-6">
+                            <label for="last_name">{% trans "Type" %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.user_type.errors %}
+
+                            {% render_field form.user_type class="form-control browser-default is-invalid" id="user_type" %}
+                            {% for error in form.user_type.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.user_type class="form-control browser-default is-valid" id="user_type" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.user_type class="form-control browser-default" id="user_type" %}
+                            {% endif %}
+
+
+                        </div>
+                        <div hidden class="vehicule col-sm-12 col-md-6">
+                            <label for="vehicule">{% trans "Vehicule" %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.vehicle_type.errors %}
+
+                            {% render_field form.vehicle_type class="form-control browser-default is-invalid" id="vehicle_type" %}
+                            {% for error in form.vehicle_type.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.vehicle_type class="form-control browser-default is-valid" id="vehicle_type" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.vehicle_type class="form-control browser-default" id="vehicle_type" %}
+                            {% endif %}
+
+
+                        </div>
+                        <div hidden class="staff col-sm-12 col-md-6">
+                        <label  for="vehicule">{% trans "Restaurant" %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.works_at.errors %}
+
+                            {% render_field form.works_at class="form-control browser-default is-invalid" id="works_at" %}
+                            {% for error in form.works_at.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.works_at class="form-control browser-default is-valid" id="works_at" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.works_at class="form-control browser-default" id="works_at" %}
+                            {% endif %}
+
+
+                        </div>
+
+
+            </div>
+            <div class="form-group row">
+
+                        <div class="col-sm-12 col-md-6">
+                            <label for="last_name">{% trans 'Last Name' %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.last_name.errors %}
+
+                            {% render_field form.last_name class="form-control browser-default is-invalid" id="last_name" %}
+                            {% for error in form.last_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.last_name class="form-control browser-default is-valid" id="last_name" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.last_name class="form-control browser-default" id="last_name" %}
+                            {% endif %}
+
+
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="first_name">{% trans 'First Name' %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.first_name.errors %}
+
+                            {% render_field form.first_name class="form-control browser-default is-invalid" id="first_name" %}
+                            {% for error in form.first_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.first_name class="form-control browser-default is-valid" id="first_name" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.first_name class="form-control browser-default" id="first_name" %}
+                            {% endif %}
+
+
+                        </div>
+
+            </div>
+            <div class="form-group row">
+
+                 <div class="col-sm-12 col-md-6">
+                            <label for="email">{% trans 'Username' %} : * </label>
+
+                            {% if form.is_bound %}
+                            {% if form.username.errors %}
+
+                            {% render_field form.username class="form-control browser-default is-invalid" id="username" %}
+                            {% for error in form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.username class="form-control browser-default is-valid" id="username" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.username class="form-control browser-default" id="username" %}
+                            {% endif %}
+
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-6">
+                            <label for="gender">{% trans 'Gender' %} : *</label>
+                            {% if form.is_bound %}
+                            {% if form.gender.errors %}
+
+                            {% render_field form.gender class="form-control browser-default is-invalid" id="gender" %}
+                            {% for error in form.gender.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.gender class="form-control browser-default is-valid" id="gender" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.gender class="form-control browser-default" id="gender" %}
+                            {% endif %}
+
+
+                        </div>
+            </div>
+            <div class="form-group row">
+
+                <div class="col-sm-12 col-md-6">
+                    <label for="phone">{% trans "Phone number" %} : *</label><br>
+       <input type="tel" style="width: 550px" class="form-control phone-input browser-default"
+                                           placeholder="{% trans 'Numero de telephone' %}" maxlength="15" required=""
+                                           id="phone" autocomplete="off" >
+                    {% if form.is_bound %}
+                    {% if form.phone.errors %}
+
+                    {% render_field form.phone type="hidden" class="form-control browser-default is-invalid" id="phone-number" %}
+                    {% for error in form.phone.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% render_field form.phone type="hidden" class="form-control browser-default is-valid" id="phone-number" %}
+                    {% endif %}
+                    {% else %}
+                    {% render_field form.phone type="hidden" class="form-control browser-default" id="phone-number" %}
+                    {% endif %}
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <label for="email">{% trans "E-MAIL" %} : *</label>
+
+                     {% if form.is_bound %}
+                     {% if form.email.errors %}
+
+                     {% render_field form.email class="form-control  browser-default is-invalid" id="email" %}
+                     {% for error in form.email.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% render_field form.email class="form-control browser-default is-valid" id="email" %}
+                    {% endif %}
+                    {% else %}
+                    {% render_field form.email class="form-control browser-default" id="email" %}
+                    {% endif %}
+                </div>
+
+
+            </div>
+            <div class="form-group row">
+
+                        <div class="col-sm-12 col-md-6">
+                            <label for="birth_date">{% trans 'Date of birth' %} :</label>
+                            {% if form.is_bound %}
+                            {% if form.birth_date.errors %}
+
+                            {% render_field form.birth_date class="form-control datepicker browser-default is-invalid" id="birth_date" %}
+                            {% for error in form.birth_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.birth_date class="form-control datepicker browser-default is-valid" id="birth_date" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.birth_date class="form-control datepicker browser-default" id="birth_date" %}
+                            {% endif %}
+
+
+                        </div>
+
+            </div>
+            <div class="form-group row">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="address">{% trans 'Address' %} : </label>
+                            {% if form.is_bound %}
+                            {% if form.address.errors %}
+
+                            {% render_field form.address class="form-control browser-default is-invalid" id="address" %}
+                            {% for error in form.address.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.address class="form-control browser-default is-valid" id="address" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.address class="form-control browser-default" id="address" %}
+                            {% endif %}
+
+
+                        </div>
+
+                 <div class="col-sm-12 col-md-6">
+                            <label for="lives_in">{% trans 'City' %} : * </label>
+
+                            {% if form.is_bound %}
+                            {% if form.lives_in.errors %}
+
+                            {% render_field form.lives_in class="form-control browser-default is-invalid" id="lives_in" %}
+                            {% for error in form.lives_in.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field form.lives_in class="form-control browser-default is-valid" id="lives_in" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field form.lives_in class="form-control browser-default" id="lives_in" %}
+                            {% endif %}
+
+
+                        </div>
+
+            </div>
+
+
+            <div class="form-group row">
+
+                <div class="col-sm-12 col-md-6">
+                    <label for="password">{% trans "Password" %} : *</label>
+
+                    {% if form.is_bound %}
+                    {% if form.password.errors %}
+
+                    {% render_field form.password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default" id="password" %}
+                    {% for error in form.password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% render_field form.password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default" id="password" %}
+                    {% endif %}
+                    {% else %}
+
+                    {% render_field form.password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default" id="password" %}
+                 <span toggle="#password" class="fas fa-eye field-icon insideinputeye toggle-password"></span>
+
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <label for="c_password">{% trans "Confirm Password" %} : *</label>
+
+                    {% if form.is_bound %}
+                    {% if form.c_password.errors %}
+
+                    {% render_field form.c_password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default " id="c_password" %}
+                    {% for error in form.c_password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% render_field form.c_password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default" id="c_password" %}
+                    {% endif %}
+                    {% else %}
+                    {% render_field form.c_password pattern=".{8,}"  title="8 characters minimum"  class="form-control browser-default" id="c_password" %}
+                       <span toggle="#c_password" class="fas fa-eye field-icon insideinputeye toggle-password"></span>
+
+                    {% endif %}
+                </div>
+            </div>
+                <input hidden value="M" id="gender" name="gender">
+
+            <div class="text-center clearfix">
+
+                <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+</div>
+
+</div><!-- End container -->
+<!-- End Content =============================================== -->
+  {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+            <script>
+
+            $("[name='works_at']").attr("required", false)
+            $("[name='vehicle_type']").attr("required", false)
+
+            if($('#user_type').val()=='D'){
+                $("[name='vehicule_type']").attr("required", true)
+                $(".vehicule").show();
+            }
+            else if($('#user_type').val()=='S'){
+                $("[name='works_at']").attr("required", true)
+                $(".staff").show();
+            }
+
+
+        $('#user_type').on('change',function(e){
+             $(".staff").hide();
+             $(".vehicule").hide();
+
+            $("[name='works_at']").attr("required", false)
+            $("[name='vehicle_type']").attr("required", false)
+
+            if($(this).val()=='D' ){
+
+                $("[name='vehicule_type']").attr("required", true)
+                $(".vehicule").show();
+            }
+            else if($(this).val()=='S'){
+                $("[name='works_at']").attr("required", true)
+                $(".staff").show();
+            }
+
+
+        })
+
+     $(".toggle-password").click(function () {
+
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var input = $($(this).attr("toggle"));
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            });
+
+
+
+
+             $(".phone-input").intlTelInput({
+               preferredCountries: ["dz"],
+               utilsScript: "{% static 'intl-tel-input/js/utils.js' %}"
+             });
+             if ($('#phone-number').val() != '') {
+               $(".phone-input").intlTelInput('setNumber', $('#phone-number').val())
+             }
+             $('.phone-input').change(function () {
+                $(this).parent().next().val($(this).intlTelInput("getNumber"))
+             })
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                yearRange: [1900, new Date(new Date().setFullYear(new Date().getFullYear() - 18)).getFullYear()],
+                maxDate:new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
+                defaultDate: new Date((new Date()).getFullYear()-18,1,31),
+
+            })
+             $('.datepicker').on('focus', function (e) {
+                $(this).datepicker('open')
+            })
+            $('.datepicker-modal .btn-flat').on('click', function (e) {
+                $('#' + $('.datepicker').parent().next().find('input').attr('id')).trigger('focus')
+            })
+
+
+
+            </script>
+
+
+{% endblock scripts %}

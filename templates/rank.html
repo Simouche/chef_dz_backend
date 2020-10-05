@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+<style>
+
+.navbar-custom.costum .nav-item .nav-link {
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	color: #393939;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	text-align: center;
+	font-weight: bold;
+
+
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+<div class="content1" style="text-align:center; margin-right:100px;margin-left:100px">
+<h1><strong>{% trans "RESULT" %}</strong></h1>
+<table class="rank table table-hover table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">{% trans "Full Name"%}</th>
+      <th scope="col">ٌ{% trans "Registration date" %}</th>
+      <th scope="col">{% trans "result" %}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for participant in participants %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td style="height:20px"><a ><img src="{%  if participant.profile.owner.photo  %} {{participant.profile.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %} " class="avatar" alt="Avatar"><strong> {{participant.profile.owner.full_name}}</strong></a></td>
+      <td>{{participant.profile.owner.date_joined}}</td>
+      <td><label style="font-size:150%;color:gold">★</label>{% if participant.stars_sum %}<strong> {{participant.stars_sum}}</strong> {% else %} <strong>0</strong>{%endif%}</td>
+        <td><a href="{%  url 'recipe:user-recipes' pk=participant.id  %}"><strong>{%  trans "More recipe" %}</strong></a></td>
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+
+<script>
+
+
+
+</script>
+
+{% endblock scripts %}

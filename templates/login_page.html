@@ -1,0 +1,163 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+<style>
+
+.navbar-custom.costum .nav-item .nav-link {
+	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+	color: #393939;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	text-align: center;
+	font-weight: bold;
+
+
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="content1">
+<h2 class="text-center mt-4">{% trans 'LOGIN' %}</h2>
+<div class="card" style="background:white;width:50%;margin:auto;margin-bottom:20px">
+    <div class="card-body">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="form-group row">
+                <div class="col">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if login_form.non_field_errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in login_form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            <p> <strong>{% trans 'Login' %}</strong></p>
+
+
+
+            <div class="form-group row">
+
+                        <div class="col-sm-6 col-md-6" >
+
+                            <label for="username">{% trans 'username' %} : </label>
+                            {% if login_form.is_bound %}
+                            {% if login_form.username.errors %}
+
+                            {% render_field login_form.username class="form-control browser-default is-invalid" id="username" %}
+                            {% for error in login_form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field login_form.username class="form-control browser-default" id="username" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field login_form.username class="form-control browser-default" id="username" %}
+                            {% endif %}
+
+
+                        </div>
+
+                        <div class="col-sm-6 col-md-6" >
+
+                            <label for="password">{% trans 'password' %} : </label>
+                            {% if login_form.is_bound %}
+                            {% if login_form.password.errors %}
+
+                            {% render_field login_form.password class="form-control browser-default is-invalid" id="password" %}
+                            {% for error in login_form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            {% render_field login_form.password class="form-control browser-default " id="password" %}
+                            {% endif %}
+                            {% else %}
+                            {% render_field login_form.password class="form-control browser-default" id="password" %}
+                            {% endif %}
+
+
+                        </div>
+
+
+            </div>
+
+
+            <div class="text-center clearfix">
+
+                <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button><br>
+                                <small><a href="{% url 'restaurants:register' %}">{% trans "SIGN Up"%}?</a></small>
+
+            </div>
+
+
+        </form>
+
+    </div>
+</div></div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+            <script>
+
+             $(".phone-input").intlTelInput({
+               preferredCountries: ["dz"],
+               utilsScript: "{% static 'intl-tel-input/js/utils.js' %}"
+             });
+             if ($('#phone-number').val() != '') {
+               $(".phone-input").intlTelInput('setNumber', $('#phone-number').val())
+             }
+             $('.phone-input').change(function () {
+                $(this).parent().next().val($(this).intlTelInput("getNumber"))
+             })
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                yearRange: [1900, new Date(new Date().setFullYear(new Date().getFullYear() - 18)).getFullYear()],
+                maxDate:new Date(new Date().setFullYear(new Date().getFullYear() - 18)),
+                defaultDate: new Date((new Date()).getFullYear()-18,1,31),
+
+            })
+             $('.datepicker').on('focus', function (e) {
+                $(this).datepicker('open')
+            })
+            $('.datepicker-modal .btn-flat').on('click', function (e) {
+                $('#' + $('.datepicker').parent().next().find('input').attr('id')).trigger('focus')
+            })
+
+
+
+            </script>
+{% endblock scripts %}

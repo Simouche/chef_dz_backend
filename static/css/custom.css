@@ -1,0 +1,33 @@
+@charset "UTF-8";
+/* YOUR CUSTOM CSS */
+.insideinputeye{
+
+	float: right;
+	margin-right: 6px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
+}
+.addrestauimg{
+            /*width: auto;*/
+            /*height: auto;*/
+
+            margin-top: 5px;
+            border: 2px dashed #8c8b8b;
+}
+.addrestauimg:hover{
+            border: 2px dashed #000;
+
+}
+.uploader {
+           opacity: 1;
+            position: absolute;
+            z-index: 1;
+            /*left: 1;*/
+            /*top: 1;*/
+            height: 100%;
+            width: 100%;
+}
+.uploader:hover{
+            cursor: pointer;
+}

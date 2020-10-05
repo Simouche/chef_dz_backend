@@ -1,0 +1,964 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block styles %}
+    <style>
+
+
+        .panel-body {
+            max-height: 650px;
+            overflow: auto;
+        }
+
+        .media-list .media img {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #e5e7e8;
+        }
+
+        .media-list .media {
+            border-bottom: 1px dashed #efefef;
+            margin-bottom: 25px;
+        }
+
+
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0px 10px;
+        }
+
+        .rate:not(:checked) > input {
+            position: absolute;
+            top: -9999px;
+        }
+
+        .rate:not(:checked) > label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
+        }
+
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;
+        }
+
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+        }
+
+        #custCarousel .carousel-indicators {
+            position: static;
+            margin-top: 5px
+        }
+
+        #custCarousel .carousel-indicators > li {
+            width: 100px
+        }
+
+        #custCarousel .carousel-indicators li img {
+            display: block;
+            opacity: 0.5
+        }
+
+        #custCarousel .carousel-indicators li.active img {
+            opacity: 1
+        }
+
+        #custCarousel .carousel-indicators li:hover img {
+            opacity: 0.75
+        }
+
+        .carousel-item img {
+            width: 80%;
+            max-height:350px;
+        }
+
+
+        .navbar-custom.costum .nav-item .nav-link {
+            padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+            color: #393939;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-weight: bold;
+
+
+        }
+
+        .heart {
+            font-size: 25px;
+            color: red;
+        }
+
+        .inforecipe {
+            background: #5CB22F;
+            color: white;
+            height: 3, 5rem;
+            width: 4.5rem;
+            margin-left: -5rem;
+            padding-top: 10px;
+        }
+
+
+    </style>
+{% endblock styles %}
+
+{% block content %}
+
+
+    <div class="content1">
+        <div class="view_recipe" style="margin:50px">
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div style="margin-bottom:25%" id="custCarousel" class="carousel slide" data-ride="carousel"
+                         align="center">
+                        <!-- slides -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="{% if recipe.main %} {{ recipe.main.url }} {% endif %}"></div>
+
+                            {% for url1 in recipe.pictures_urls %}
+                                <div class="carousel-item"><img src="{{ url1 }}"></div>
+
+                            {% endfor %}
+                        </div>
+
+                        <ol class="carousel-indicators list-inline">
+                            <li class="list-inline-item active"><a id="carousel-selector-0" class="selected"
+                                                                   data-slide-to="0" data-target="#custCarousel">
+                                <img src="{% if recipe.main %}{{ recipe.main.url }}{% endif %}" class="img-fluid"> </a></li>
+
+                            {% for url1 in recipe.pictures_urls %}
+
+                                <li class="list-inline-item"><a id="carousel-selector-1" data-slide-to="{{ forloop.counter }}" data-target="#custCarousel">
+                                    <img src="{{ url1 }}" class="img-fluid"> </a></li>
+
+                            {% endfor %}
+                        </ol>
+                    </div>
+
+
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-8"><h1 style="margin:0px">{{ recipe.food_name }}
+                            {% if  request.user.client.participant == recipe.published_by %}
+                                <i style="font-size:50%;color:#66D1C8" onclick="window.open('{% url 'recipe:recipe-update' pk=recipe.pk %}', '_self')"
+                                   class="fas fa-edit"></i>
+
+                            {% endif %}
+
+                        </h1></div>
+                        <div id="recipeinfo" class="col" style="text-align:right">
+                            <label style="font-size:150%;color:#626262">
+                                {% for a in recipe.likes.all %}
+                                    {% if forloop.last %}
+                                        ❤ {{ forloop.counter }}
+
+                                    {% endif %}
+                                {% endfor %}</label>
+                            <label style="font-size:150%;color:#626262">★{% if avg %} {{ avg }} {% else %}
+                                1 {% endif %}</label>
+
+                        </div>
+                    </div>
+                    <div style="margin-bottom:20px;border-top: 0.5px solid #B5B8B1;width:100%" class="trait"></div>
+
+
+                    <p style="font-size: large">{{ recipe.description }} </p>
+                    <label>{{recipe.created_at}}</label>
+                    <section id="tabs">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12" style="float: left;padding: 0px">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                                               href="#nav-ingredient" role="tab" aria-controls="nav-ingredient"
+                                               aria-selected="true">{% trans "Ingredients" %}
+                                            {% if  request.user.client.participant == recipe.published_by %}      <i data-toggle="modal" data-target="#addingr{{recipe.pk}}" style="color:#66D1C8" class="fas fa-plus"></i>
+                                            {% endif %}</a>
+                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
+                                               href="#nav-steps" role="tab" aria-controls="nav-steps"
+                                               aria-selected="false">{% trans "Methodes" %}
+                                                 {% if  request.user.client.participant == recipe.published_by %}
+                                                     <i data-toggle="modal" data-target="#addrec{{recipe.pk}}" style="color:#66D1C8" class="fas fa-plus"></i></a>
+                                       {% endif %}
+                                            </a>
+                                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
+                                               href="#nav-review" role="tab" aria-controls="nav-review"
+                                               aria-selected="false">{% trans "Review" %}</a>
+                                            <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab"
+                                               href="#nav-about" role="tab" aria-controls="nav-about"
+                                               aria-selected="false">{% trans "About" %}</a>
+
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-ingredient" role="tabpanel"
+                                             aria-labelledby="nav-home-tab">
+                                            {% for step in recipe.custom_contains.all %}
+                                                <ul style="font-size: 150%;">
+                                                    <li style=" list-style-type: square;">
+
+                                                        {% if  request.user.client.participant == recipe.published_by %}
+                                <i data-toggle="modal" style="font-size:50%;color:#66D1C8" data-target="#updateingr{{step.pk}}"  class="fas fa-edit"></i>
+                        <div class="modal fade" id="updateingr{{step.pk}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{% trans "Update" %}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+
+                                  <div class="row"><div class="col">
+                                  <label for="quant{{step.pk}}"> {% trans "Quantity" %}</label>
+                                  <input name="quant{{step.pk}}" id="quant{{step.pk}}" type="number" step="any" {% language 'en'%} value="{{step.quantity}}" {% endlanguage %}class="form-control browser-default">
+                                  </div>
+                                      <div class="col">
+                                           <label for="measure{{step.pk}}"> {% trans "Measure" %}</label>
+                                          <select name="measure{{step.pk}}" id="measure{{step.pk}}" type="text" class="form-control browser-default">
+                                        {% if step.measure %}
+                                        {%  for mesure in measures %}
+
+                                            {% if mesure == step.measure %}
+                                              <option value="{{ mesure.id }}">{{ mesure }}</option>
+                                            {% endif %}
+                                              {% endfor %}
+                                                        {% else %}
+                                                <option></option>
+                                            {% endif %}
+                                              {%  for mesure in measures %}
+                                               {% if mesure != step.measure %}
+
+                                              <option value="{{ mesure.id }}">{{ mesure }}</option>
+                                                {% endif %}
+                                              {% endfor %}
+                                          </select>
+
+                                      </div>
+                                  </div>
+                                 <label for="ingr{{step.pk}}"> {% trans "Ingredient" %}</label>
+                                 <input name="ingr{{step.pk}}" id="ingr{{step.pk}}" type="text" value=" {{ step.ingredient }}" class="form-control browser-default">
+                              </div>
+                              <div class="modal-footer">
+
+                                <button onclick="updaterecipe({{recipe.pk}}, {{step.pk}})" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+            <div class="modal fade" id="addingr{{recipe.pk}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{% trans "Add" %}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+
+                                  <div class="row"><div class="col">
+                                  <label for="quant{{recipe.pk}}"> {% trans "Quantity" %}</label>
+                                  <input name="quant{{recipe.pk}}" id="quant{{recipe.pk}}" type="number" step="any"  class="form-control browser-default">
+                                  </div>
+                                      <div class="col">
+                                         <label for="measure{{recipe.pk}}"> {% trans "Measure" %}</label>
+                                          <select name="measure{{recipe.pk}}" id="measure{{recipe.pk}}" type="text" class="form-control browser-default">
+                                        <option></option>
+                                              {%  for mesure in measures %}
+
+                                              <option value="{{ mesure.id }}">{{ mesure }}</option>
+                                              {% endfor %}
+                                          </select>
+
+                                      </div>
+                                  </div>
+                                 <label for="ingr{{recipe.pk}}"> {% trans "Ingredient" %}</label>
+                                 <input name="ingr{{recipe.pk}}" id="ingr{{recipe.pk}}" type="text"  class="form-control browser-default">
+                              </div>
+                              <div class="modal-footer">
+
+                                <button onclick="addingr({{recipe.pk}})" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+<i style="font-size:50%;color:#66D1C8" class="fa fa-trash" onclick="confirmDeletestep({{recipe.pk}},{{step.pk}})"></i>
+                            {% endif %}
+                                                        {{ step.quantity }}{% if step.measure %}{{ step.measure }} {% endif %}- {{ step.ingredient }}</li>
+                                                </ul>
+                                            {% endfor %}
+
+
+
+
+                                        </div>
+                                        <div class="tab-pane fade show" id="nav-steps" role="tabpane2"
+                                             aria-labelledby="nav-home-tab">
+                                            {% for step in recipe.steps.all %}
+                                                <ol style="font-size: 150%;">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-sm-6">
+
+                                                       <li   style="list-style-type: square">       {% if  request.user.client.participant == recipe.published_by %}
+                                <i data-toggle="modal" data-target="#updatestep{{step.pk}}" style="font-size:50%;color:#66D1C8" class="fas fa-edit"></i>
+                        <div class="modal fade" id="updatestep{{step.pk}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">{% trans "Update" %}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+
+
+                                <form id="form_img{{step.pk}}" method="GET" role="form" enctype="multipart/form-data">
+
+                                  <div class="row">
+                                      <div class="col">
+                                      <input name="recipe" id="recipe{{step.pk}}"  hidden value="{{recipe.pk}}">
+                                      <input name="number" id="number{{step.pk}}"  hidden value="{{step.number}}">
+                                      <label for="description{{step.pk}}"> {% trans "Description" %}</label>
+                                      <textarea name="description" id="description{{step.pk}}"  class="form-control browser-default">{{step.description}}</textarea></div>
+                                  </div>
+
+                                <div class="try1">
+                            {% if step.image %}
+                                  <div class='img-wrapper1'> <img class='recetteimage1' width='100%' height='120px'  src='{{step.image.url}}'  width='auto'>
+                                      <div class="img-overlay1"><i class="fas fa-times fa-2x" onclick="tryy1(this)"></i>
+                                      </div>
+                                  </div>
+
+                                {% endif %}
+
+
+                            <div  {% if step.image %} style="display:none"{% endif %} class="recetteimg1 card" style="height:130px;padding: 0" >
+                                <div class="sss" style="margin: auto;">
+                                    add image
+
+                                </div>
+                                <img style="margin: 0;padding: 0"  id='image1' class="profileImg">
+                                <input type="file" name="image"  class="uploader"  onchange="readURL1(this);">
+                            </div>
+                        </div>
+
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button onclick="updatestep({{recipe.pk}},{{step.pk}})"  class="btn btn-primary">{% trans "Save" %}</button>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <i style="font-size:50%;color:#66D1C8" class="fa fa-trash" onclick="confirmDelete({{recipe.pk}},{{step.pk}})"></i>
+                            {% endif %}
+ {{ step.description }}</li>
+                                                        </div>
+            {% if step.image %}
+                                                        <div class="col-sm-5">
+                                                            <img src="{{ step.image.url }}"
+                                                                 style="width:100%;height:170px">
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </ol>
+                                                {% if  request.user.client.participant == recipe.published_by %}
+                        <div class="modal fade" id="addrec{{recipe.pk}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">{% trans "Add" %}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+
+
+                              <div class="modal-body">
+
+
+                                <form id="form_img{{recipe.pk}}" method="GET" role="form" enctype="multipart/form-data">
+
+                                  <div class="row">
+                                      <div class="col">
+                                      <input name="recipe" id="recipe{{recipe.pk}}"  hidden value="{{recipe.pk}}">
+                                      <input name="number" id="number{{recipe.pk}}"  hidden value="{{ forloop.counter }}">
+                                      <label for="description{{recipe.pk}}"> {% trans "Description" %}</label>
+                                      <textarea name="description" id="description{{recipe.pk}}"  class="form-control browser-default"></textarea></div>
+                                  </div>
+
+                                <div class="try1">
+
+
+
+
+                            <div  class="recetteimg1 card" style="height:130px;padding: 0" >
+                                <div class="sss" style="margin: auto;">
+                                    add image
+
+                                </div>
+                                <img style="margin: 0;padding: 0"  id='image1' class="profileImg">
+                                <input type="file" name="image"  class="uploader"  onchange="readURL1(this);">
+                            </div>
+                        </div>
+
+                                </form>
+                              </div>
+
+
+
+                              <div class="modal-footer">
+                                   <button onclick="addrec({{recipe.pk}})"  class="btn btn-primary">{% trans "Save" %}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                            {% endif %}
+                                            {% endfor %}
+
+                                        </div>
+                                        <div class="tab-pane fade show" id="nav-review" role="tabpane3"
+                                             aria-labelledby="nav-home-tab">
+
+
+                                            <div class="panel-body">
+                                            <textarea id="comment" class="form-control" placeholder="write a comment..."
+                                                      rows="3"></textarea>
+                                                <br>
+                                                <div class="float-left">
+                                                    {% if liked %}
+                                                        <i class="heart fas fa-heart"></i>
+                                                    {% else %}
+                                                        <i class="heart far fa-heart"></i>
+                                                    {% endif %}
+                                                    <div class="rate">
+                                                        <input type="radio" id="star5" name="rate" value="5"/>
+                                                        <label for="star5" title="text">5 stars</label>
+                                                        <input type="radio" id="star4" name="rate" value="4"/>
+                                                        <label for="star4" title="text">4 stars</label>
+                                                        <input type="radio" id="star3" name="rate" value="3"/>
+                                                        <label for="star3" title="text">3 stars</label>
+                                                        <input type="radio" id="star2" name="rate" value="2"/>
+                                                        <label for="star2" title="text">2 stars</label>
+                                                        <input type="radio" id="star1" name="rate" value="1"/>
+                                                        <label for="star1" title="text">1 star</label>
+                                                        <strong></strong>
+                                                    </div>
+
+                                                </div>
+                                                <button type="button" id="submitcomment"
+                                                        class="btn btn-info float-right">
+                                                    Post
+                                                </button>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <ul class="media-list">
+
+                                                    {% for comment in recipe.comments.all %}
+
+                                                        <li class="media">
+                                                            <a href="#" class="float-left">
+                                                                <img style="margin-right:5px" src="{%  if comment.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"
+                                                                     class="img-cercle">
+                                                            </a>
+                                                            <div class="media-body">
+                                                            <span class=" float-right">
+                                                                <small class="text-muted">{{ comment.created_at }}</small>
+                                                            </span>
+                                                                <strong class="text-success">{{ comment.user.owner.full_name }}</strong>
+                                                                <p>
+                                                                    {{ comment.comment }}
+                                                                </p>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                    {% for comment in recipe.stars.all %}
+
+                                                    <li class="media">
+                                                        <a href="#" class="float-left">
+                                                            <img style="margin-right:5px" src="{%  if comment.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}" class="img-cercle">
+                                                        </a>
+                                                        <div class="media-body">
+                                <span class=" float-right">
+                                    <small class="text-muted">{{ comment.created_at }}</small>
+                                </span>
+                                                            <strong class="text-success">{{ comment.user.owner.full_name }}</strong>
+                                                            <p>
+                                                                {{ comment.stars }} <label
+                                                                    style="font-size:150%">★</label>
+
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <div class="tab-pane fade show" id="nav-about" role="tabpane4"
+                                             aria-labelledby="nav-home-tab">
+
+                                            <div class="row">
+                                                <div class="col-md-3" style="text-align:center;">
+                                                    <img src="{%  if recipe.published_by.profile.owner.photo  %} {{recipe.published_by.profile.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"
+                                                         style="border-radius:50%;max-width:80%;">
+                                                    <h4>{{ recipe.published_by.profile.owner.username }}</h4>
+                                                    <label style="font-size:150%">{{ user_avg.likes_ }}❤ {{ user_avg.avg }}★</label>
+                                                </div>
+                                                <div style="border-left: 0.5px solid #B5B8B1;" class="col-md-9">
+                                                    <div class="row">
+                                                        {% for others in other %}
+                                                            <div class="item col-sm-4 grid"
+                                                                 onclick="window.open('{% url 'recipe:recipe-details' pk=others.pk %}', '_self')">
+
+
+                                                                <div class="image">
+                                                                    <img style="height:120px" class="imgcuisine"
+                                                                         src="{% if others.main %}{{ others.main.url }}{% endif %}" width="100%">
+
+
+                                                                </div>
+                                                                <div class="texte">
+                                                                    <p style="float:left;" class="texterecipe">
+                                                                        <strong>{{ others.food_name }} </strong></p>
+                                                                    <span style="float:right;"> {% if others.avg %}
+                                                                        {{ others.avg }} {% else %} 1 {% endif %}<i
+                                                                            class="fa fa-star mauve"></i> {{ others.likes_ }}❤</span>
+
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        {% endfor %}
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div></div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+    <script src="{% static 'js/rating.min.js' %}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+{% endblock scripts %}
+
+
+{% block scripts1 %}
+function confirmDelete(pkr,pk)
+{
+var r=confirm("{% trans "delete this steps" %}");
+if (r==true)
+{
+     $.ajax({
+                url : "/recipe/recipes/"+pkr+"/update/steps/delete/"+pk+"/",
+                type : 'POST',
+                data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+
+                success: function (json) {
+                        console.log("success");
+
+                    },
+
+                error: function (xhr, errmsg, err) {
+                        console.log('error');
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+
+        });
+    location.reload();
+
+}
+
+}
+    function confirmDeletestep(pkr,pk)
+{
+var r=confirm("{% trans "delete this ingredient" %}");
+if (r==true)
+{
+     $.ajax({
+                url : "/recipe/recipes/"+pkr+"/update/custom-ingredients/delete/"+pk+"/",
+                type : 'POST',
+                data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+
+                success: function (json) {
+                        console.log("success");
+
+                    },
+
+                error: function (xhr, errmsg, err) {
+                        console.log('error');
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+
+        });
+    location.reload();
+
+}
+
+}
+ function addingr(pkr){
+                 var quantity =  $('#quant'+pkr).val();;
+                var ingredient =  $('#ingr'+pkr).val();;
+                var measure =  $('#measure'+pkr).val();;
+                var recipe=pkr;
+
+   $.ajax({
+                    url: "/recipe/recipes/"+pkr+"/update/custom-ingredients/create/",
+
+                    type: "POST", // http method
+                    data: {
+                        ingredient: ingredient,
+                        quantity: quantity,
+                        measure:measure,
+                        recipe:recipe,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (json) {
+                        console.log("success");
+
+                    },
+
+                    error: function (xhr, errmsg, err) {
+                        console.log('error');
+                    }
+                });
+
+    location.reload();
+
+}
+
+ function addrec(pkr){
+                var description =  $('#description'+pkr).val();;
+                var number =  $('#number'+pkr).val()+1;
+
+                var recipe=pkr;
+
+            var formData = new FormData($("#form_img"+pkr)[0]);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+
+            $.ajax({
+                url : "/recipe/recipes/"+pkr+"/update/steps/create/",
+                type : 'POST',
+                data : formData,
+                contentType : false,
+                processData : false,
+                success: function(resp) {
+                    console.log(resp);
+                }
+
+        });
+
+
+} function updatestep(pkr,pk){
+                var description =  $('#description'+pk).val();;
+                var number =  $('#number'+pk).val();;
+                var recipe=pkr;
+
+            var formData = new FormData($("#form_img"+pk)[0]);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+
+            $.ajax({
+                url : "/recipe/recipes/"+pkr+"/update/steps/update/"+pk+"/",
+                type : 'POST',
+                data : formData,
+                contentType : false,
+                processData : false,
+                success: function(resp) {
+                    console.log(resp);
+                }
+
+        });
+    location.reload();
+
+
+}
+
+
+
+
+
+ function updaterecipe(pkr,pk){
+                var quantity =  $('#quant'+pk).val();;
+                var ingredient =  $('#ingr'+pk).val();;
+                var measure =  $('#measure'+pk).val();;
+                var recipe=pkr;
+   $.ajax({
+                    url: "/recipe/recipes/"+pkr+"/update/custom-ingredients/update/"+pk+"/",
+
+                    type: "POST", // http method
+                    data: {
+                        ingredient: ingredient,
+                        quantity: quantity,
+                        recipe:recipe,
+                        measure:measure,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (json) {
+                        console.log("success");
+
+                    },
+
+                    error: function (xhr, errmsg, err) {
+                        console.log('error');
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    }
+                });
+
+    location.reload();
+            }
+
+
+
+    function readURL1(input) {
+            var test = input;
+
+        if (input.files && input.files[0]) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+               $(input).closest('.try1').append("<div class='img-wrapper1'> <img class='recetteimage1' width='100%' height='120px' src='"+e.target.result+"' width='auto'><div class=\"img-overlay1\"><i class=\"fas fa-times fa-2x\" onclick=\"tryy1(this)\"></i></div> </div>");
+                $(input).parent(".recetteimg1" ).hide();
+
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+
+
+  function tryy1(thisinput,input) {
+        $(thisinput).parents('.try1').children().show();
+        $(thisinput).closest('.img-wrapper1').remove();
+        $(thisinput).val('');
+
+    }
+   $(document).ready(function () {
+var userRating = 0;
+var a=0;
+
+    $("#submitcomment").click(function () {
+             var comment = $('#comment').val();
+                if (comment != ''  && userRating !=0 ){
+
+
+
+       $.ajax({
+                        url: "/recipe/api/rating/stars/",
+
+                        type: "POST", // http method
+                        data: {
+                            stars: userRating,
+                            user: {{request.user.client.id}},
+                            recipe: {{recipe.pk}},
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        }, // data sent with the post request
+
+
+                        success: function (json) {
+                            console.log("success"); // another sanity check
+                         a=1;
+                        },
+
+                        error: function (xhr, errmsg, err) {
+                            console.log('error');
+                        }
+                    });
+
+
+
+       $.ajax({
+                    url: "/recipe/api/rating/comment/",
+
+                    type: "POST", // http method
+                    data: {
+                        comment: comment,
+                        user: {{request.user.client.id}},
+                        recipe: {{recipe.pk}},
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }, // data sent with the post request
+
+
+                    success: function (json) {
+                        if(a==0){
+                        $('.media-list').prepend('<li class="media"><a href="#" class="float-left"><img style="margin-right:5px" src="{%  if request.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"  class="img-cercle"></a><div class="media-body"><span class=" float-right"> <small class="text-muted">{%  trans "now" %}</small></span><strong class="text-success"> {{request.user.full_name}}</strong><p> ' + comment + ' </p></div></li>');
+                        } else {
+                         $('.media-list').prepend('<li class="media"><a href="#" class="float-left"><img style="margin-right:5px" src="{%  if request.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"  class="img-cercle"></a><div class="media-body"><span class=" float-right"> <small class="text-muted">{%  trans "now" %}</small></span><strong class="text-success"> {{request.user.full_name}}</strong><p> ' + comment + ' '+userRating+' <label style="font-size:150%">★</label> </p></div></li>');
+
+                            }
+
+    },
+
+                    error: function (xhr, errmsg, err) {
+                        console.log('error');
+                    }
+                });
+
+
+                        $('input:radio').prop("checked", false);
+                        $('#comment').val('');
+
+
+                }
+                else if(comment != '' ){
+                    $.ajax({
+                    url: "/recipe/api/rating/comment/",
+
+                    type: "POST", // http method
+                    data: {
+                        comment: comment,
+                        user: {{request.user.client.id}},
+                        recipe: {{recipe.pk}},
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }, // data sent with the post request
+
+
+                    success: function (json) {
+                        $('#comment').val(' ');
+
+                        console.log("success"); // another sanity check
+                        $('.media-list').prepend('<li class="media"><a href="#" class="float-left"><img style="margin-right:5px" src="{%  if request.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"  class="img-cercle"></a><div class="media-body"><span class=" float-right"> <small class="text-muted">{%  trans "now" %}</small></span><strong class="text-success"> {{request.user.full_name}}</strong><p> ' + comment + ' </p></div></li>');
+                    },
+
+                    error: function (xhr, errmsg, err) {
+                        console.log('error');
+                    }
+                });
+
+                            $('#comment').val('');
+                }else if(userRating !=0){
+                              $.ajax({
+                        url: "/recipe/api/rating/stars/",
+
+                        type: "POST", // http method
+                        data: {
+                            stars: userRating,
+                            user: {{request.user.client.id}},
+                            recipe: {{recipe.pk}},
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        }, // data sent with the post request
+
+
+                        success: function (json) {
+                            console.log("success"); // another sanity check
+                            $("#recipeinfo").load(" #recipeinfo");
+                            $('.media-list').prepend('<li class="media"><a href="#" class="float-left"><img style="margin-right:5px" src="{%  if comment.user.owner.photo  %} {{comment.user.owner.photo}} {% else %} {% static 'images/man.png' %} {% endif %}"  class="img-cercle"></a><div class="media-body"><span class=" float-right"> <small class="text-muted">{%  trans "now"  %}</small></span><strong class="text-success"> {{request.user.full_name}}</strong><p> ' + userRating + '<label style="font-size:150%">★</label> </p></div></li>');
+
+                        },
+
+                        error: function (xhr, errmsg, err) {
+                            console.log('error');
+                        }
+                    });
+                             $('input:radio').prop("checked", false);
+
+                }
+
+
+
+
+
+            });
+
+
+            $(".heart.far").click(function () {
+                $(this).toggleClass("far fa");
+                $.ajax({
+                    url: "/recipe/api/rating/like/",
+
+                    type: "POST", // http method
+                    data: {
+                        user: {{request.user.client.id}},
+                        recipe: {{recipe.pk}},
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }, // data sent with the post request
+
+
+                    success: function (json) {
+                        console.log("success"); // another sanity check
+                        $("#recipeinfo").load(" #recipeinfo");
+                    },
+
+                    error: function (xhr, errmsg, err) {
+                        console.log('error');
+                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    }
+                });
+
+            });
+
+
+            $('input:radio').change(
+                function () {
+                     userRating = this.value;
+
+                });
+
+
+
+        });
+
+
+{% endblock scripts1 %}
+

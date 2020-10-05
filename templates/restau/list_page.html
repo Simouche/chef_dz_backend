@@ -1,0 +1,112 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+<!-- SubHeader =============================================== -->
+<section class="parallax-window" id="short" data-parallax="scroll" data-image-src="{% static 'img/sub_header_short.jpg' %}" data-natural-width="1400" data-natural-height="350">
+    <div id="subheader">
+	<div id="sub_content">
+    	<h1>{% trans 'Results in your zone' %}</h1>
+    </div><!-- End sub_content -->
+</div><!-- End subheader -->
+</section><!-- End section -->
+<!-- End SubHeader ============================================ -->
+
+<!-- Content ================================================== -->
+<div class="container margin_60_35">
+	<div class="row">
+
+
+		<div class="col-md-12">
+
+
+				<div class="row">
+					<div class="col-md-3 col-sm-3 col-xs-6">
+										<a href="{% url 'restaurants:create-restaurant' %}" class="btn_map">{% trans 'Add new restaurant' %}</a>
+
+					</div>
+
+				</div>
+
+
+
+            <div class="row">
+                {% for restau in restaurant %}
+            	<div class="col-md-4 col-sm-4 wow zoomIn" data-wow-delay="0.1s">
+                	<a class="strip_list grid" href="{% url 'restaurants:details-restaurant' pk=restau.id %}">
+                    	<div class="desc">
+							<div class="thumb_strip">
+								<img src="{% if restau.logo %}{{ restau.logo.url}}{% else %}{%  static 'img/thumb_restaurant.jpg' %}{% endif %}" alt="">
+							</div>
+							<div class="rating">
+								<i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+							</div>
+							<h3>{{ restau.name }}</h3>
+							<div class="type">
+								Chinese / Thai
+							</div>
+							<div class="location">
+								 {{ restau.address }} <br><span class="opening">Opens at 17:00.</span> Minimum order: $15
+							</div>
+							<ul>
+								<li>Take away<i class="icon_check_alt2 ok"></i></li>
+								<li>Delivery<i class="icon_check_alt2 ok"></i></li>
+							</ul>
+						</div>
+                    </a><!-- End strip_list-->
+                </div><!-- End col-md-6-->
+                 {% endfor %}
+            </div><!-- End row-->
+		</div><!-- End col-md-9-->
+
+	</div><!-- End row -->
+</div><!-- End container -->
+<!-- End Content =============================================== -->
+<!-- Content ================================================== -->
+
+{#{% for restau in restaurant %}#}
+{#			<div class="strip_list wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">#}
+{##}
+{#				<div class="row">#}
+{#					<div class="col-md-9 col-sm-9">#}
+{#						<div class="desc">#}
+{#							<div class="thumb_strip">#}
+{#								<a href="{% url 'restaurants:details-restaurant' pk=restau.id %}"><img src="{%  static 'img/thumb_restaurant.jpg' %}" alt=""></a>#}
+{#							</div>#}
+{#							<div class="rating">#}
+{#								<i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i> (<small><a href="#0">98 reviews</a></small>)#}
+{#							</div>#}
+{#							<h3>{{ restau.name }}</h3>#}
+{#							<div class="type">#}
+{#								Mexican / American#}
+{#							</div>#}
+{#							<div class="location">#}
+{#                                {{ restau.address }} <span class="opening">Opens at 17:00.</span> Minimum order: $15#}
+{#							</div>#}
+{#							<ul>#}
+{#								<li>Delivery<i class="icon_check_alt2 ok"></i></li>#}
+{#							</ul>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="col-md-3 col-sm-3">#}
+{#						<div class="go_to">#}
+{#							<div>#}
+{#								<a href="{% url 'restaurants:details-restaurant' pk=restau.id %}" class="btn_1">View Menu</a>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div><!-- End row-->#}
+{#			</div><!-- End strip_list-->#}
+{#            {% endfor %}#}
+{#            <a href="#0" class="load_more_bt wow fadeIn" data-wow-delay="0.2s">Load more...</a>#}
+{#		</div><!-- End col-md-9-->#}
+{##}
+{#	</div><!-- End row -->#}
+{#</div><!-- End container -->#}
+<!-- End Content =============================================== -->
+  {% endblock content %}

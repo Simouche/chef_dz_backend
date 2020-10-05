@@ -1,0 +1,517 @@
+{% extends 'restau/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+    <!-- SubHeader =============================================== -->
+    <section class="parallax-window" id="short" data-parallax="scroll"
+             data-image-src="{% static 'img/sub_header_cart.jpg' %}" data-natural-width="1400"
+             data-natural-height="350">
+        <div id="subheader">
+            <div id="sub_content">
+                <h1>{% trans 'Add restaurant' %}</h1>
+                <p>lorem upsum lorem upsum lorem upsum lorem upsum lorem upsum </p>
+                <p></p>
+            </div><!-- End sub_content -->
+        </div><!-- End subheader -->
+    </section><!-- End section -->
+    <!-- End SubHeader ============================================ -->
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li><a href="#0">Home</a>
+                </li>
+                <li><a href="#0">Category</a>
+                </li>
+                <li>Page active</li>
+            </ul>
+            <a href="#0" class="search-overlay-menu-btn"><i class="icon-search-6"></i> Search</a>
+        </div>
+    </div><!-- Position -->
+
+    <!-- Content ================================================== -->
+    <div class="container margin_60">
+        <div id="tabs" class="tabs">
+
+            <div class="content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        <div class="form-group row">
+                            <div class="col">
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                                         role="alert">
+                                        {{ message }}
+
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <div class="indent_title_in">
+                        <i class="icon_house_alt"></i>
+                        <h3>{% trans 'General restaurant description' %}</h3>
+                        <p>Partem diceret praesent mel et, vis facilis alienum antiopam ea, vim in sumo diam sonet.
+                            Illud ignota cum te, decore elaboraret nec ea. Quo ei graeci repudiare definitionem. Vim et
+                            malorum ornatus assentior, exerci elaboraret eum ut, diam meliore no mel.</p>
+                    </div>
+
+                    <div class="wrapper_indent">
+                        <div class="form-group">
+                            <label>{% trans 'Restaurant name' %}</label>
+                            {% if form.is_bound %}
+                                {% if form.name.errors %}
+
+                                    {% render_field form.name class="form-control browser-default is-invalid" id="name" %}
+                                    {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field form.name class="form-control browser-default is-valid" id="name" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field form.name class="form-control browser-default" id="name" %}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>{% trans 'Restaurant description' %}</label>
+                            {% if form.is_bound %}
+                                {% if form.description.errors %}
+
+                                    {% render_field form.description rows="3" class="form-control browser-default is-invalid" id="description" %}
+                                    {% for error in form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field form.description rows="3" class="form-control browser-default is-valid" id="description" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field form.description rows="3" class="form-control browser-default" id="description" %}
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Registre_commerce' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.registre_commerce.errors %}
+
+                                            {% render_field form.registre_commerce class="form-control browser-default is-invalid" id="registre_commerce" %}
+                                            {% for error in form.registre_commerce.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.registre_commerce class="form-control browser-default is-valid" id="registre_commerce" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.registre_commerce class="form-control browser-default" id="registre_commerce" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Fiscale' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.id_fiscale.errors %}
+
+                                            {% render_field form.id_fiscale class="form-control browser-default is-invalid" id="id_fiscale" %}
+                                            {% for error in form.id_fiscale.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.id_fiscale class="form-control browser-default is-valid" id="id_fiscale" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.id_fiscale class="form-control browser-default" id="id_fiscale" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Restaurant cuisine' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.cuisines.errors %}
+
+                                            {% render_field form.cuisines class="form-control browser-default is-invalid" id="cuisines" %}
+                                            {% for error in form.cuisines.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.cuisines class="form-control browser-default is-valid" id="cuisines" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.cuisines class="form-control browser-default" id="cuisines" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Restaurant type' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.types.errors %}
+
+                                            {% render_field form.types class="form-control browser-default is-invalid" id="types" %}
+                                            {% for error in form.types.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.types class="form-control browser-default is-valid" id="types" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.types class="form-control browser-default" id="types" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Meal type' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.meal_types.errors %}
+
+                                            {% render_field form.meal_types class="form-control browser-default is-invalid" id="meal_types" %}
+                                            {% for error in form.meal_types.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.meal_types class="form-control browser-default is-valid" id="meal_types" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.meal_types class="form-control browser-default" id="meal_types" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'City' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.city.errors %}
+
+                                            {% render_field form.city class="form-control browser-default is-invalid" id="city" %}
+                                            {% for error in form.city.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.city class="form-control browser-default is-valid" id="city" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.city class="form-control browser-default" id="city" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Phone number' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.phone.errors %}
+
+                                            {% render_field form.phone class="form-control browser-default is-invalid" id="phone" %}
+                                            {% for error in form.phone.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.phone class="form-control browser-default is-valid" id="phone" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.phone class="form-control browser-default" id="phone" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Email' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.email.errors %}
+
+                                            {% render_field form.email class="form-control browser-default is-invalid" id="email" %}
+                                            {% for error in form.email.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.email class="form-control browser-default is-valid" id="email" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.email class="form-control browser-default" id="email" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Openning time' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.open_at.errors %}
+
+                                            {% render_field form.open_at class="form-control browser-default is-invalid" id="open_at" %}
+                                            {% for error in form.open_at.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.open_at class="form-control browser-default is-valid" id="open_at" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.open_at class="form-control browser-default" id="open_at" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Closing time' %}</label>
+                                    {% if form.is_bound %}
+                                        {% if form.close_at.errors %}
+
+                                            {% render_field form.close_at class="form-control browser-default is-invalid" id="close_at" %}
+                                            {% for error in form.close_at.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.close_at class="form-control browser-default is-valid" id="close_at" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.close_at class="form-control browser-default" id="close_at" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End wrapper_indent -->
+
+                    <hr class="styled_2">
+
+                    <div class="indent_title_in">
+                        <i class="icon_pin_alt"></i>
+                        <h3>{% trans 'Address' %}</h3>
+                        <p>
+                            Mussum ipsum cacilds, vidis litro abertis.
+                        </p>
+                    </div>
+                    <div class="wrapper_indent">
+                        <div class="form-group">
+                            <label>Address</label>
+                            {% if form.is_bound %}
+                                {% if form.address.errors %}
+
+                                    {% render_field form.address class="form-control browser-default is-invalid" id="address" %}
+                                    {% for error in form.address.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field form.address class="form-control browser-default is-valid" id="address" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field form.address class="form-control browser-default" id="address" %}
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+            <div class="col-sm-12">
+
+
+                        <div class="collapse" id="collapseMap">
+                            <div id="map" ></div>
+                         </div>
+{#                        <p>#}
+					<a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap">View on map</a>
+{#				</p>#}
+                          </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>latitude</label>
+                                    {% if form.is_bound %}
+                                        {% if form.latitude.errors %}
+
+                                            {% render_field form.latitude class="form-control browser-default is-invalid" id="latitude" %}
+                                            {% for error in form.latitude.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.latitude class="form-control browser-default is-valid" id="latitude" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.latitude class="form-control browser-default" id="latitude" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>longitude</label>
+                                    {% if form.is_bound %}
+                                        {% if form.longitude.errors %}
+
+                                            {% render_field form.longitude class="form-control browser-default is-invalid" id="longitude" %}
+                                            {% for error in form.longitude.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field form.longitude class="form-control browser-default is-valid" id="longitude" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.longitude class="form-control browser-default" id="longitude" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- End wrapper_indent -->
+
+                    <hr class="styled_2">
+                    <div class="indent_title_in">
+                        <i class="icon_images"></i>
+                        <h3>{% trans 'Logo and restaurant photos' %}</h3>
+                        <p>
+                            Mussum ipsum cacilds, vidis litro abertis.
+                        </p>
+                    </div>
+
+                    <div class="wrapper_indent add_bottom_45">
+                        {% if form.is_bound %}
+                            {% if form.logo.errors %}
+
+                                {% render_field form.logo class="form-control browser-default is-invalid" id="logo" %}
+                                {% for error in form.logo.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {% render_field form.logo class="form-control browser-default is-valid" id="logo" %}
+                            {% endif %}
+                        {% else %}
+                            {% render_field form.logo class="form-control browser-default" id="logo" %}
+                        {% endif %}
+                        ----------
+
+                        <label for="media">{% trans "Other images" %}</label>
+                        <input accept="image/*" class="form-control" type="file" name="images" id="images"
+                               multiple="multiple"/>
+
+                    </div><!-- End wrapper_indent -->
+
+
+                    <hr class="styled_2">
+
+
+                    <div class="wrapper_indent">
+                        <button type="submit" id="submit" class="btn_1">{% trans 'Save' %}</button>
+                    </div><!-- End wrapper_indent -->
+
+                </form><!-- End section 1 -->
+
+
+            </div>
+
+
+        </div><!-- End content -->
+    </div>
+    </div><!-- End container  -->
+    <!-- End Content =============================================== -->
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        function tryy() {
+            $('.img-wrapper').remove();
+            $('.addrestauimg').show();
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    $('.try').append("<div class='img-wrapper' style='text-align:center'> <img class='recetteimage' src='" + e.target.result + "' width='auto'> <div class=\"img-overlay\"> <i class=\"fas fa-times fa-4x\" onclick=\"tryy()\"></i></div> </div>");
+                    $('.addrestauimg').hide();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+function initMap() {
+              var myLatlng = {lat: 31.7954306, lng: -1.0136862};
+
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 6, center: myLatlng});
+
+              // Create the initial InfoWindow.
+              var infoWindow = new google.maps.InfoWindow(
+                  {content: 'Click the map to get Lat/Lng!', position: myLatlng});
+              infoWindow.open(map);
+
+              // Configure the click listener.
+              map.addListener('click', function(mapsMouseEvent) {
+                // Close the current InfoWindow.
+                infoWindow.close();
+
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+                console.log(mapsMouseEvent.latLng.lat().toString());
+                $('#latitude').val(mapsMouseEvent.latLng.lat());
+                $('#longitude').val(mapsMouseEvent.latLng.lng());
+                infoWindow.setContent("Your address : "+mapsMouseEvent.latLng.toString());
+                infoWindow.open(map);
+              });
+
+}
+    </script>
+
+{% endblock scripts %}
